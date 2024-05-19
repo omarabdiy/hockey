@@ -61,9 +61,12 @@ function startNewGame() {
 
 function recordShot(event) {
     const overlay = document.getElementById('hockeyFieldOverlay');
-    const rect = overlay.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width * 100;
-    const y = (event.clientY - rect.top) / rect.height * 100;
+    const overlayRect = overlay.getBoundingClientRect();
+    const field = document.getElementById('hockeyField');
+    const scaleX = field.naturalWidth / overlayRect.width;
+    const scaleY = field.naturalHeight / overlayRect.height;
+    const x = (event.clientX - overlayRect.left) * scaleX;
+    const y = (event.clientY - overlayRect.top) * scaleY;
 
     currentShot = { x, y };
 
