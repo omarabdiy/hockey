@@ -56,15 +56,14 @@ function startNewGame() {
         player.shotDetails = [];
     });
     renderPlayers();
+    clearShots();
 }
 
 function recordShot(event) {
-    const field = document.getElementById('hockeyField');
     const overlay = document.getElementById('hockeyFieldOverlay');
-    const rect = field.getBoundingClientRect();
-    const overlayRect = overlay.getBoundingClientRect();
-    const x = event.clientX - rect.left - (overlayRect.left - rect.left);
-    const y = event.clientY - rect.top - (overlayRect.top - rect.top);
+    const rect = overlay.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
 
     currentShot = { x, y };
 
@@ -80,49 +79,6 @@ function recordShot(event) {
 
     openShotDialog();
 }
-
-function renderShots() {
-    const field = document.getElementById('hockeyField');
-    const overlay = document.getElementById('hockeyFieldOverlay');
-    const rect = field.getBoundingClientRect();
-    const overlayRect = overlay.getBoundingClientRect();
-    const fieldWidth = rect.width;
-    const fieldHeight = rect.height;
-
-    players.forEach(player => {
-        player.shotDetails.forEach(shot => {
-            const marker = document.createElement('div');
-            marker.className = 'shot-marker';
-            marker.style.position = 'absolute';
-
-            // Calcola le coordinate corrette in base alle dimensioni del rettangolo sopra l'immagine
-            const markerX = ((shot.x - rect.left) / fieldWidth) * 100 + '%';
-            const markerY = ((shot.y - rect.top) / fieldHeight) * 100 + '%';
-            marker.style.left = markerX;
-            marker.style.top = markerY;
-
-            // Imposta il testo del segno in base al tipo di tiro
-            switch (shot.type) {
-                case 'Goal':
-                    marker.textContent = 'G';
-                    break;
-                case 'On Target':
-                    marker.textContent = 'X';
-                    break;
-                case 'Off Target':
-                    marker.textContent = 'O';
-                    break;
-                default:
-                    marker.textContent = '-';
-                    break;
-            }
-
-            // Aggiungi il segno al campo da hockey
-            field.parentNode.appendChild(marker);
-        });
-    });
-}
-
 
 function openShotDialog() {
     const dialog = document.getElementById('shotDialog');
@@ -144,8 +100,28 @@ function saveShot() {
         player.shots++;
         player.shotDetails.push({ ...currentShot, type: shotType });
         renderPlayers();
+        renderShots();
         closeShotDialog();
     }
+}
+
+function clearShots() {
+    const markers = document.querySelectorAll('.shot-marker');
+    markers.forEach(marker => marker.remove());
+}
+
+function renderShots() {
+    const overlay = document.getElementById('hockeyFieldOverlay');
+    players.forEach(player => {
+        player.shotDetails.forEach(shot => {
+            const marker = document.createElement('div');
+            marker.className = 'shot-marker';
+            marker.style.left = `${shot.x}px`;
+            marker.style.top = `${shot.y}px`;
+            marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
+            overlay.appendChild(marker);
+        });
+    });
 }
 
 function viewPlayerStats(playerIndex) {
@@ -153,27 +129,15 @@ function viewPlayerStats(playerIndex) {
     const playerStatsField = document.getElementById('playerStatsField');
     const playerShotsList = document.getElementById('playerShotsList');
 
-    playerStatsField.parentNode.removeChild(playerStatsField); // Remove previous canvas if any
-
-    const newField = document.createElement('img');
-    newField.src = 'hockey_field.png';
-    newField.id = 'playerStatsField';
-    newField.style.position = 'relative';
-    newField.style.width = '100%';
-
-    const fieldContainer = document.getElementById('playerStatsFieldContainer');
-    fieldContainer.innerHTML = '';
-    fieldContainer.appendChild(newField);
+    clearPlayerStatsShots();
 
     player.shotDetails.forEach(shot => {
         const marker = document.createElement('div');
         marker.className = 'shot-marker';
-        marker.style.position = 'absolute';
         marker.style.left = `${shot.x}px`;
         marker.style.top = `${shot.y}px`;
-        marker.textContent = shot.type;
-
-        newField.parentNode.appendChild(marker);
+        marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
+        playerStatsField.parentNode.appendChild(marker);
     });
 
     const playerShotsListItem = document.createElement('li');
@@ -182,6 +146,11 @@ function viewPlayerStats(playerIndex) {
     playerShotsList.appendChild(playerShotsListItem);
 
     openPlayerStatsDialog();
+}
+
+function clearPlayerStatsShots() {
+    const markers = document.querySelectorAll('#playerStatsFieldContainer .shot-marker');
+    markers.forEach(marker => marker.remove());
 }
 
 function openPlayerStatsDialog() {
@@ -193,4 +162,7 @@ function closePlayerStatsDialog() {
     const dialog = document.getElementById('playerStatsDialog');
     dialog.style.display = 'none';
 }
+
+document.getElementById('hockeyFieldOverlay').addEventListener('click', recordShot);
+
 
