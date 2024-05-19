@@ -107,7 +107,7 @@ function saveShot() {
 function viewPlayerStats(playerIndex) {
     const player = players[playerIndex];
     const overlay = document.getElementById('playerStatsFieldOverlay');
-    const field = document.getElementById('playerStatsField');
+    const field = document.getElementById('hockeyField');
     const overlayRect = overlay.getBoundingClientRect();
     const fieldRect = field.getBoundingClientRect();
     const scaleX = overlayRect.width / fieldRect.width;
@@ -123,6 +123,19 @@ function viewPlayerStats(playerIndex) {
         marker.style.top = `${shot.y * scaleY}px`;
         marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
         overlay.appendChild(marker);
+    });
+
+    const otherPlayers = players.filter((_, index) => index !== playerIndex);
+    otherPlayers.forEach(otherPlayer => {
+        otherPlayer.shotDetails.forEach(shot => {
+            const marker = document.createElement('div');
+            marker.className = 'shot-marker';
+            marker.style.left = `${shot.x * scaleX}px`;
+            marker.style.top = `${shot.y * scaleY}px`;
+            marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
+            marker.style.opacity = '0.5'; // Riduce l'opacità per i tiri di altri giocatori
+            overlay.appendChild(marker);
+        });
     });
 
     const playerShotsListItem = document.createElement('li');
