@@ -38,8 +38,7 @@ function renderPlayers() {
         addShotButton.textContent = 'Add Shot';
         addShotButton.onclick = () => addShot(index);
 
-        const
-viewStatsButton = document.createElement('button');
+        const viewStatsButton = document.createElement('button');
         viewStatsButton.textContent = 'View Stats';
         viewStatsButton.onclick = () => viewPlayerStats(index);
 
@@ -60,13 +59,10 @@ function startNewGame() {
 }
 
 function recordShot(event) {
-    const overlay = document.getElementById('hockeyFieldOverlay');
-    const overlayRect = overlay.getBoundingClientRect();
     const field = document.getElementById('hockeyField');
-    const scaleX = field.naturalWidth / overlayRect.width;
-    const scaleY = field.naturalHeight / overlayRect.height;
-    const x = (event.clientX + window.pageXOffset - overlayRect.left) * scaleX;
-    const y = (event.clientY + window.pageYOffset - overlayRect.top) * scaleY;
+    const fieldRect = field.getBoundingClientRect();
+    const x = event.clientX - fieldRect.left;
+    const y = event.clientY - fieldRect.top;
 
     currentShot = { x, y };
 
@@ -82,7 +78,6 @@ function recordShot(event) {
 
     openShotDialog();
 }
-
 
 function openShotDialog() {
     const dialog = document.getElementById('shotDialog');
