@@ -76,7 +76,49 @@ function recordShot(event) {
         playerSelect.appendChild(option);
     });
 
+    // Mantieni il tiro nella partita corrente
+    renderShots();
+
     openShotDialog();
+}
+
+function renderShots() {
+    const field = document.getElementById('hockeyField');
+    const rect = field.getBoundingClientRect();
+    const fieldWidth = rect.width;
+    const fieldHeight = rect.height;
+
+    players.forEach(player => {
+        player.shotDetails.forEach(shot => {
+            const marker = document.createElement('div');
+            marker.className = 'shot-marker';
+            marker.style.position = 'absolute';
+
+            // Calcola le coordinate corrette in base alle dimensioni dell'immagine del campo da hockey
+            const markerX = (shot.x / fieldWidth) * 100 + '%';
+            const markerY = (shot.y / fieldHeight) * 100 + '%';
+            marker.style.left = markerX;
+            marker.style.top = markerY;
+
+            // Imposta il testo del segno in base al tipo di tiro
+            switch (shot.type) {
+                case 'Goal':
+                    marker.textContent = 'G';
+                    break;
+                case 'On Target':
+                    marker.textContent = 'X';
+                    break;
+                case 'Off Target':
+                    marker.textContent = 'O';
+                    break;
+                default:
+                    marker.textContent = '-';
+                    break;
+            }
+
+            field.parentNode.appendChild(marker);
+        });
+    });
 }
 
 function openShotDialog() {
