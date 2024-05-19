@@ -34,6 +34,15 @@ function renderPlayers() {
         const playerName = document.createElement('span');
         playerName.textContent = `${player.name} - Shots: ${player.shots}`;
 
+        const filterCheckbox = document.createElement('input');
+        filterCheckbox.type = 'checkbox';
+        filterCheckbox.id = `filterCheckbox${index}`;
+        filterCheckbox.addEventListener('change', () => togglePlayerFilter(index));
+
+        const filterLabel = document.createElement('label');
+        filterLabel.textContent = 'Filter Shots';
+        filterLabel.setAttribute('for', `filterCheckbox${index}`);
+
         const addShotButton = document.createElement('button');
         addShotButton.textContent = 'Add Shot';
         addShotButton.onclick = () => addShot(index);
@@ -43,6 +52,8 @@ function renderPlayers() {
         viewStatsButton.onclick = () => viewPlayerStats(index);
 
         playerDiv.appendChild(playerName);
+        playerDiv.appendChild(filterCheckbox);
+        playerDiv.appendChild(filterLabel);
         playerDiv.appendChild(addShotButton);
         playerDiv.appendChild(viewStatsButton);
 
@@ -107,7 +118,7 @@ function saveShot() {
 function viewPlayerStats(playerIndex) {
     const player = players[playerIndex];
     const overlay = document.getElementById('playerStatsFieldOverlay');
-    const field = document.getElementById('hockeyField');
+    const field = document.getElementById('playerStatsField');
     const overlayRect = overlay.getBoundingClientRect();
     const fieldRect = field.getBoundingClientRect();
     const scaleX = overlayRect.width / fieldRect.width;
@@ -123,19 +134,6 @@ function viewPlayerStats(playerIndex) {
         marker.style.top = `${shot.y * scaleY}px`;
         marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
         overlay.appendChild(marker);
-    });
-
-    const otherPlayers = players.filter((_, index) => index !== playerIndex);
-    otherPlayers.forEach(otherPlayer => {
-        otherPlayer.shotDetails.forEach(shot => {
-            const marker = document.createElement('div');
-            marker.className = 'shot-marker';
-            marker.style.left = `${shot.x * scaleX}px`;
-            marker.style.top = `${shot.y * scaleY}px`;
-            marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
-            marker.style.opacity = '0.5'; // Riduce l'opacità per i tiri di altri giocatori
-            overlay.appendChild(marker);
-        });
     });
 
     const playerShotsListItem = document.createElement('li');
@@ -187,4 +185,21 @@ function renderShots() {
     });
 }
 
-document.getElementById('hockeyFieldOverlay').addEventListener('click', recordShot);
+function togglePlayerFilter(playerIndex) {
+    const filterCheckbox = document.getElementById(`filterCheckbox${playerIndex}`);
+    const isChecked = filterCheckbox.checked;
+
+    if (isChecked) {
+        filterPlayerShots(playerIndex);
+    } else {
+        renderShots();
+    }
+}
+
+function filterPlayerShots(playerIndex) {
+    const overlay = document.getElementById('hockeyFieldOverlay');
+    const field = document.getElementById('hockeyField');
+    const overlayRect = overlay.getBoundingClientRect();
+    const fieldRect = field.getBoundingClientRect();
+    const scaleX = overlayRect.width / fieldRect.width;
+    const scaleY
