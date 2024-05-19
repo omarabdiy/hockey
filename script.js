@@ -38,7 +38,8 @@ function renderPlayers() {
         addShotButton.textContent = 'Add Shot';
         addShotButton.onclick = () => addShot(index);
 
-        const viewStatsButton = document.createElement('button');
+        const
+viewStatsButton = document.createElement('button');
         viewStatsButton.textContent = 'View Stats';
         viewStatsButton.onclick = () => viewPlayerStats(index);
 
@@ -99,7 +100,7 @@ function saveShot() {
         player.shots++;
         player.shotDetails.push({ ...currentShot, type: shotType });
         renderPlayers();
-        renderShots(); // Aggiunto per visualizzare i tiri sulla mappa principale
+        renderShots();
         closeShotDialog();
     }
 }
@@ -107,9 +108,7 @@ function saveShot() {
 function viewPlayerStats(playerIndex) {
     const player = players[playerIndex];
     const overlay = document.getElementById('playerStatsFieldOverlay');
-    const field = document.getElementById('playerStatsField');
     const overlayRect = overlay.getBoundingClientRect();
-    const fieldRect = field.getBoundingClientRect();
     const scaleX = overlayRect.width / fieldRect.width;
     const scaleY = overlayRect.height / fieldRect.height;
     const playerShotsList = document.getElementById('playerShotsList');
@@ -155,9 +154,7 @@ function clearShots() {
 
 function renderShots() {
     const overlay = document.getElementById('hockeyFieldOverlay');
-    const field = document.getElementById('hockeyField');
     const overlayRect = overlay.getBoundingClientRect();
-    const fieldRect = field.getBoundingClientRect();
     const scaleX = overlayRect.width / fieldRect.width;
     const scaleY = overlayRect.height / fieldRect.height;
 
