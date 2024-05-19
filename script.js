@@ -38,11 +38,24 @@ function renderPlayers() {
         addShotButton.textContent = 'Add Shot';
         addShotButton.onclick = () => addShot(index);
 
+        const viewStatsButton = document.createElement('button');
+        viewStatsButton.textContent = 'View Stats';
+        viewStatsButton.onclick = () => viewPlayerStats(index);
+
         playerDiv.appendChild(playerName);
         playerDiv.appendChild(addShotButton);
+        playerDiv.appendChild(viewStatsButton);
 
         playersList.appendChild(playerDiv);
     });
+}
+
+function startNewGame() {
+    players.forEach(player => {
+        player.shots = 0;
+        player.shotDetails = [];
+    });
+    renderPlayers();
 }
 
 function recordShot(event) {
@@ -88,4 +101,50 @@ function saveShot() {
         renderPlayers();
         closeShotDialog();
     }
+}
+
+function viewPlayerStats(playerIndex) {
+    const player = players[playerIndex];
+    const playerStatsField = document.getElementById('playerStatsField');
+    const playerShotsList = document.getElementById('playerShotsList');
+    
+    playerStatsField.parentNode.removeChild(playerStatsField); // Remove previous canvas if any
+    
+    const newField = document.createElement('img');
+    newField.src = 'hockey_field.png';
+    newField.id = 'playerStatsField';
+    newField.style.position = 'relative';
+    newField.style.width = '100%';
+    
+    const fieldContainer = document.getElementById('playerStatsFieldContainer
+    fieldContainer.innerHTML = '';
+    fieldContainer.appendChild(newField);
+
+    player.shotDetails.forEach(shot => {
+        const marker = document.createElement('div');
+        marker.className = 'shot-marker';
+        marker.style.position = 'absolute';
+        marker.style.left = `${shot.x}px`;
+        marker.style.top = `${shot.y}px`;
+        marker.textContent = shot.type;
+
+        newField.parentNode.appendChild(marker);
+    });
+
+    const playerShotsListItem = document.createElement('li');
+    playerShotsListItem.textContent = `Player: ${player.name} - Shots: ${player.shots}`;
+    playerShotsList.innerHTML = '';
+    playerShotsList.appendChild(playerShotsListItem);
+
+    openPlayerStatsDialog();
+}
+
+function openPlayerStatsDialog() {
+    const dialog = document.getElementById('playerStatsDialog');
+    dialog.style.display = 'flex';
+}
+
+function closePlayerStatsDialog() {
+    const dialog = document.getElementById('playerStatsDialog');
+    dialog.style.display = 'none';
 }
