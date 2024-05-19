@@ -57,6 +57,7 @@ function startNewGame() {
     });
     renderPlayers();
 }
+
 function recordShot(event) {
     const field = document.getElementById('hockeyField');
     const rect = field.getBoundingClientRect();
