@@ -19,9 +19,12 @@
     <!-- Button to start a new game -->
     <button onclick="startNewGame()">Start New Game</button>
     <!-- Hockey field image to record shots -->
-    <div id="hockeyFieldContainer" class="field-container">
-        <img src="hockey_field.png" alt="Hockey Field" id="hockeyField">
-        <div id="hockeyFieldOverlay" class="overlay"></div>
+    <div id="fieldContainer">
+        <h2>Hockey Field</h2>
+        <div id="hockeyFieldContainer">
+            <img src="hockey_field.png" alt="Hockey Field" id="hockeyField">
+            <div id="hockeyFieldOverlay" onclick="recordShot(event)"></div>
+        </div>
     </div>
 </div>
 
@@ -47,15 +50,15 @@
     <div class="dialog-content">
         <span class="close" onclick="closePlayerStatsDialog()">&times;</span>
         <h2>Player Stats</h2>
-        <div id="playerStatsFieldContainer" class="field-container">
-            <img src="hockey_field.png" alt="Hockey Field" id="playerStatsField">
-            <div id="playerStatsFieldOverlay" class="overlay"></div>
+        <div id="playerStatsFieldContainer">
+            <div id="playerStatsFieldOverlay">
+                <img src="hockey_field.png" alt="Hockey Field" id="playerStatsField">
+            </div>
         </div>
         <ul id="playerShotsList"></ul>
     </div>
 </div>
 
-<!-- JavaScript -->
 <script src="script.js"></script>
 </body>
 </html>
