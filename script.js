@@ -60,9 +60,11 @@ function startNewGame() {
 
 function recordShot(event) {
     const field = document.getElementById('hockeyField');
+    const overlay = document.getElementById('hockeyFieldOverlay');
     const rect = field.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const overlayRect = overlay.getBoundingClientRect();
+    const x = event.clientX - rect.left - (overlayRect.left - rect.left);
+    const y = event.clientY - rect.top - (overlayRect.top - rect.top);
 
     currentShot = { x, y };
 
@@ -81,7 +83,9 @@ function recordShot(event) {
 
 function renderShots() {
     const field = document.getElementById('hockeyField');
+    const overlay = document.getElementById('hockeyFieldOverlay');
     const rect = field.getBoundingClientRect();
+    const overlayRect = overlay.getBoundingClientRect();
     const fieldWidth = rect.width;
     const fieldHeight = rect.height;
 
@@ -91,9 +95,9 @@ function renderShots() {
             marker.className = 'shot-marker';
             marker.style.position = 'absolute';
 
-            // Calcola le coordinate corrette in base alle dimensioni dell'immagine del campo da hockey
-            const markerX = (shot.x / fieldWidth) * 100 + '%';
-            const markerY = (shot.y / fieldHeight) * 100 + '%';
+            // Calcola le coordinate corrette in base alle dimensioni del rettangolo sopra l'immagine
+            const markerX = ((shot.x - rect.left) / fieldWidth) * 100 + '%';
+            const markerY = ((shot.y - rect.top) / fieldHeight) * 100 + '%';
             marker.style.left = markerX;
             marker.style.top = markerY;
 
