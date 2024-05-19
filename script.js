@@ -76,9 +76,6 @@ function recordShot(event) {
         playerSelect.appendChild(option);
     });
 
-    // Mantieni il tiro nella partita corrente
-    renderShots();
-
     openShotDialog();
 }
 
@@ -116,10 +113,12 @@ function renderShots() {
                     break;
             }
 
+            // Aggiungi il segno al campo da hockey
             field.parentNode.appendChild(marker);
         });
     });
 }
+
 
 function openShotDialog() {
     const dialog = document.getElementById('shotDialog');
