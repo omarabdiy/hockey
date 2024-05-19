@@ -14,6 +14,7 @@
             <button onclick="addPlayer()">Add Player</button>
         </div>
         <div id="playersList"></div>
+        <button onclick="startNewGame()">Start New Game</button>
         <div id="fieldContainer">
             <h2>Hockey Field</h2>
             <img src="hockey_field.png" alt="Hockey Field" id="hockeyField" onclick="recordShot(event)">
@@ -33,6 +34,17 @@
                 <option value="Off Target">Off Target</option>
             </select>
             <button onclick="saveShot()">Save Shot</button>
+        </div>
+    </div>
+
+    <div id="playerStatsDialog" class="dialog">
+        <div class="dialog-content">
+            <span class="close" onclick="closePlayerStatsDialog()">&times;</span>
+            <h2>Player Stats</h2>
+            <div id="playerStatsFieldContainer">
+                <img src="hockey_field.png" alt="Hockey Field" id="playerStatsField">
+            </div>
+            <ul id="playerShotsList"></ul>
         </div>
     </div>
 
