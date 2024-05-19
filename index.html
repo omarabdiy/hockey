@@ -21,10 +21,7 @@
     <!-- Hockey field image to record shots -->
     <div id="fieldContainer">
         <h2>Hockey Field</h2>
-        <div id="hockeyFieldContainer">
-            <img src="hockey_field.png" alt="Hockey Field" id="hockeyField">
-            <div id="hockeyFieldOverlay" onclick="recordShot(event)"></div>
-        </div>
+        <img src="hockey_field.png" alt="Hockey Field" id="hockeyField" onclick="recordShot(event)">
     </div>
 </div>
 
@@ -51,14 +48,13 @@
         <span class="close" onclick="closePlayerStatsDialog()">&times;</span>
         <h2>Player Stats</h2>
         <div id="playerStatsFieldContainer">
-            <div id="playerStatsFieldOverlay">
-                <img src="hockey_field.png" alt="Hockey Field" id="playerStatsField">
-            </div>
+            <img src="hockey_field.png" alt="Hockey Field" id="playerStatsField">
         </div>
         <ul id="playerShotsList"></ul>
     </div>
 </div>
 
+<!-- JavaScript -->
 <script src="script.js"></script>
 </body>
 </html>

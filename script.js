@@ -57,12 +57,11 @@ function startNewGame() {
     });
     renderPlayers();
 }
-
 function recordShot(event) {
     const field = document.getElementById('hockeyField');
-    const fieldRect = field.getBoundingClientRect();
-    const x = event.clientX - fieldRect.left;
-    const y = event.clientY - fieldRect.top;
+    const rect = field.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
 
     currentShot = { x, y };
 
@@ -99,28 +98,36 @@ function saveShot() {
         player.shots++;
         player.shotDetails.push({ ...currentShot, type: shotType });
         renderPlayers();
-        renderShots();
         closeShotDialog();
     }
 }
 
 function viewPlayerStats(playerIndex) {
     const player = players[playerIndex];
-    const overlay = document.getElementById('playerStatsFieldOverlay');
-    const overlayRect = overlay.getBoundingClientRect();
-    const scaleX = overlayRect.width / fieldRect.width;
-    const scaleY = overlayRect.height / fieldRect.height;
+    const playerStatsField = document.getElementById('playerStatsField');
     const playerShotsList = document.getElementById('playerShotsList');
 
-    clearPlayerStatsShots();
+    playerStatsField.parentNode.removeChild(playerStatsField); // Remove previous canvas if any
+
+    const newField = document.createElement('img');
+    newField.src = 'hockey_field.png';
+    newField.id = 'playerStatsField';
+    newField.style.position = 'relative';
+    newField.style.width = '100%';
+
+    const fieldContainer = document.getElementById('playerStatsFieldContainer');
+    fieldContainer.innerHTML = '';
+    fieldContainer.appendChild(newField);
 
     player.shotDetails.forEach(shot => {
         const marker = document.createElement('div');
         marker.className = 'shot-marker';
-        marker.style.left = `${shot.x * scaleX}px`;
-        marker.style.top = `${shot.y * scaleY}px`;
-        marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
-        overlay.appendChild(marker);
+        marker.style.position = 'absolute';
+        marker.style.left = `${shot.x}px`;
+        marker.style.top = `${shot.y}px`;
+        marker.textContent = shot.type;
+
+        newField.parentNode.appendChild(marker);
     });
 
     const playerShotsListItem = document.createElement('li');
@@ -129,11 +136,6 @@ function viewPlayerStats(playerIndex) {
     playerShotsList.appendChild(playerShotsListItem);
 
     openPlayerStatsDialog();
-}
-
-function clearPlayerStatsShots() {
-    const markers = document.querySelectorAll('#playerStatsFieldOverlay .shot-marker');
-    markers.forEach(marker => marker.remove());
 }
 
 function openPlayerStatsDialog() {
@@ -146,28 +148,3 @@ function closePlayerStatsDialog() {
     dialog.style.display = 'none';
 }
 
-function clearShots() {
-    const markers = document.querySelectorAll('.shot-marker');
-    markers.forEach(marker => marker.remove());
-}
-
-function renderShots() {
-    const overlay = document.getElementById('hockeyFieldOverlay');
-    const overlayRect = overlay.getBoundingClientRect();
-    const scaleX = overlayRect.width / fieldRect.width;
-    const scaleY = overlayRect.height / fieldRect.height;
-
-    clearShots();
-    players.forEach(player => {
-        player.shotDetails.forEach(shot => {
-            const marker = document.createElement('div');
-            marker.className = 'shot-marker';
-            marker.style.left = `${shot.x * scaleX}px`;
-            marker.style.top = `${shot.y * scaleY}px`;
-            marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
-            overlay.appendChild(marker);
-        });
-    });
-}
-
-document.getElementById('hockeyFieldOverlay').addEventListener('click', recordShot);

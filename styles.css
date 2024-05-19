@@ -77,28 +77,11 @@ button:hover {
 
 #fieldContainer {
     margin-top: 20px;
-    position: relative;
 }
 
 #hockeyField, #playerStatsField {
     width: 100%;
-}
-
-#hockeyFieldContainer {
-    position: relative;
-}
-
-#hockeyFieldOverlay, #playerStatsFieldOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.shot-marker {
-    position: absolute;
-    color: black; /* Set marker color */
+    cursor: crosshair;
 }
 
 .dialog {
