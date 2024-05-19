@@ -112,7 +112,7 @@ function clearShots() {
 
 function renderShots() {
     const overlay = document.getElementById('hockeyFieldOverlay');
-    overlay.innerHTML = ''; // Clear previous shots
+    clearShots();
     players.forEach(player => {
         player.shotDetails.forEach(shot => {
             const marker = document.createElement('div');
@@ -127,7 +127,7 @@ function renderShots() {
 
 function viewPlayerStats(playerIndex) {
     const player = players[playerIndex];
-    const playerStatsField = document.getElementById('playerStatsField');
+    const overlay = document.getElementById('playerStatsFieldOverlay');
     const playerShotsList = document.getElementById('playerShotsList');
 
     clearPlayerStatsShots();
@@ -138,7 +138,7 @@ function viewPlayerStats(playerIndex) {
         marker.style.left = `${shot.x}px`;
         marker.style.top = `${shot.y}px`;
         marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
-        playerStatsField.parentNode.appendChild(marker);
+        overlay.appendChild(marker);
     });
 
     const playerShotsListItem = document.createElement('li');
@@ -150,7 +150,7 @@ function viewPlayerStats(playerIndex) {
 }
 
 function clearPlayerStatsShots() {
-    const markers = document.querySelectorAll('#playerStatsFieldContainer .shot-marker');
+    const markers = document.querySelectorAll('#playerStatsFieldOverlay .shot-marker');
     markers.forEach(marker => marker.remove());
 }
 
