@@ -80,6 +80,7 @@ function recordShot(event) {
     openShotDialog();
 }
 
+
 function openShotDialog() {
     const dialog = document.getElementById('shotDialog');
     dialog.style.display = 'flex';
@@ -109,7 +110,6 @@ function clearShots() {
     const markers = document.querySelectorAll('.shot-marker');
     markers.forEach(marker => marker.remove());
 }
-
 function renderShots() {
     const overlay = document.getElementById('hockeyFieldOverlay');
     clearShots();
@@ -118,12 +118,13 @@ function renderShots() {
             const marker = document.createElement('div');
             marker.className = 'shot-marker';
             marker.style.left = `${shot.x}%`;
-            marker.style.top = `${shot.y}%`;
+            marker.style.top = `${shot.y}%`; // Modificato questo blocco
             marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
             overlay.appendChild(marker);
         });
     });
 }
+
 
 function viewPlayerStats(playerIndex) {
     const player = players[playerIndex];
@@ -136,7 +137,7 @@ function viewPlayerStats(playerIndex) {
         const marker = document.createElement('div');
         marker.className = 'shot-marker';
         marker.style.left = `${shot.x}%`;
-        marker.style.top = `${shot.y}%`;
+        marker.style.top = `${shot.y}%`; // Modificato questo blocco
         marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
         overlay.appendChild(marker);
     });
