@@ -48,7 +48,8 @@
     <div class="dialog-content">
         <span class="close" onclick="closePlayerStatsDialog()">&times;</span>
         <h2>Player Stats</h2>
-        <div id="playerStatsFieldContainer">
+        <div id="playerStatsFieldContainer" style="position: relative;">
+            <div id="playerStatsFieldOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Icehockeylayout.svg/310px-Icehockeylayout.svg.png" alt="Hockey Field" id="playerStatsField">
         </div>
         <ul id="playerShotsList"></ul>
