@@ -65,8 +65,8 @@ function recordShot(event) {
     const field = document.getElementById('hockeyField');
     const scaleX = field.naturalWidth / overlayRect.width;
     const scaleY = field.naturalHeight / overlayRect.height;
-    const x = (event.clientX - overlayRect.left) * scaleX;
-    const y = (event.clientY - overlayRect.top) * scaleY;
+    const x = (event.clientX + window.pageXOffset - overlayRect.left) * scaleX;
+    const y = (event.clientY + window.pageYOffset - overlayRect.top) * scaleY;
 
     currentShot = { x, y };
 
@@ -82,6 +82,7 @@ function recordShot(event) {
 
     openShotDialog();
 }
+
 
 function openShotDialog() {
     const dialog = document.getElementById('shotDialog');
