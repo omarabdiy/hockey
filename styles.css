@@ -121,3 +121,11 @@ button:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+.shot-marker {
+    position: absolute;
+    font-weight: bold;
+    font-size: 20px;
+    color: red;
+}
+
