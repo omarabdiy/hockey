@@ -62,8 +62,8 @@ function startNewGame() {
 function recordShot(event) {
     const overlay = document.getElementById('hockeyFieldOverlay');
     const rect = overlay.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const x = (event.clientX - rect.left) / rect.width * 100;
+    const y = (event.clientY - rect.top) / rect.height * 100;
 
     currentShot = { x, y };
 
@@ -117,8 +117,8 @@ function renderShots() {
         player.shotDetails.forEach(shot => {
             const marker = document.createElement('div');
             marker.className = 'shot-marker';
-            marker.style.left = `${shot.x}px`;
-            marker.style.top = `${shot.y}px`;
+            marker.style.left = `${shot.x}%`;
+            marker.style.top = `${shot.y}%`;
             marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
             overlay.appendChild(marker);
         });
@@ -135,8 +135,8 @@ function viewPlayerStats(playerIndex) {
     player.shotDetails.forEach(shot => {
         const marker = document.createElement('div');
         marker.className = 'shot-marker';
-        marker.style.left = `${shot.x}px`;
-        marker.style.top = `${shot.y}px`;
+        marker.style.left = `${shot.x}%`;
+        marker.style.top = `${shot.y}%`;
         marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
         overlay.appendChild(marker);
     });
