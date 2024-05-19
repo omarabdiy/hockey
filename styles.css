@@ -121,3 +121,17 @@ button:hover {
     text-decoration: none;
     cursor: pointer;
 }
+.shot-marker {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    color: white;
+    padding: 2px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
