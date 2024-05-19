@@ -112,6 +112,7 @@ function clearShots() {
 
 function renderShots() {
     const overlay = document.getElementById('hockeyFieldOverlay');
+    overlay.innerHTML = ''; // Clear previous shots
     players.forEach(player => {
         player.shotDetails.forEach(shot => {
             const marker = document.createElement('div');
@@ -164,5 +165,3 @@ function closePlayerStatsDialog() {
 }
 
 document.getElementById('hockeyFieldOverlay').addEventListener('click', recordShot);
-
-
