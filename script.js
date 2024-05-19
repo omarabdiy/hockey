@@ -57,7 +57,6 @@ function startNewGame() {
     });
     renderPlayers();
 }
-
 function recordShot(event) {
     const field = document.getElementById('hockeyField');
     const rect = field.getBoundingClientRect();
@@ -107,16 +106,16 @@ function viewPlayerStats(playerIndex) {
     const player = players[playerIndex];
     const playerStatsField = document.getElementById('playerStatsField');
     const playerShotsList = document.getElementById('playerShotsList');
-    
+
     playerStatsField.parentNode.removeChild(playerStatsField); // Remove previous canvas if any
-    
+
     const newField = document.createElement('img');
     newField.src = 'hockey_field.png';
     newField.id = 'playerStatsField';
     newField.style.position = 'relative';
     newField.style.width = '100%';
-    
-    const fieldContainer = document.getElementById('playerStatsFieldContainer
+
+    const fieldContainer = document.getElementById('playerStatsFieldContainer');
     fieldContainer.innerHTML = '';
     fieldContainer.appendChild(newField);
 
@@ -148,3 +147,4 @@ function closePlayerStatsDialog() {
     const dialog = document.getElementById('playerStatsDialog');
     dialog.style.display = 'none';
 }
+

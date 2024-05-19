@@ -7,47 +7,54 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Hockey Player Stats</h1>
-        <div class="form-group">
-            <input type="text" id="playerNameInput" placeholder="Enter player name">
-            <button onclick="addPlayer()">Add Player</button>
-        </div>
-        <div id="playersList"></div>
-        <button onclick="startNewGame()">Start New Game</button>
-        <div id="fieldContainer">
-            <h2>Hockey Field</h2>
-            <img src="hockey_field.png" alt="Hockey Field" id="hockeyField" onclick="recordShot(event)">
-        </div>
+<div class="container">
+    <h1>Hockey Player Stats</h1>
+    <!-- Form to add players -->
+    <div class="form-group">
+        <input type="text" id="playerNameInput" placeholder="Enter player name">
+        <button onclick="addPlayer()">Add Player</button>
     </div>
-
-    <div id="shotDialog" class="dialog">
-        <div class="dialog-content">
-            <span class="close" onclick="closeShotDialog()">&times;</span>
-            <h2>Record Shot</h2>
-            <label for="playerSelect">Player:</label>
-            <select id="playerSelect"></select>
-            <label for="shotType">Shot Type:</label>
-            <select id="shotType">
-                <option value="Goal">Goal</option>
-                <option value="On Target">On Target</option>
-                <option value="Off Target">Off Target</option>
-            </select>
-            <button onclick="saveShot()">Save Shot</button>
-        </div>
+    <!-- List of players -->
+    <div id="playersList"></div>
+    <!-- Button to start a new game -->
+    <button onclick="startNewGame()">Start New Game</button>
+    <!-- Hockey field image to record shots -->
+    <div id="fieldContainer">
+        <h2>Hockey Field</h2>
+        <img src="hockey_field.png" alt="Hockey Field" id="hockeyField" onclick="recordShot(event)">
     </div>
+</div>
 
-    <div id="playerStatsDialog" class="dialog">
-        <div class="dialog-content">
-            <span class="close" onclick="closePlayerStatsDialog()">&times;</span>
-            <h2>Player Stats</h2>
-            <div id="playerStatsFieldContainer">
-                <img src="hockey_field.png" alt="Hockey Field" id="playerStatsField">
-            </div>
-            <ul id="playerShotsList"></ul>
-        </div>
+<!-- Dialog to record shot -->
+<div id="shotDialog" class="dialog">
+    <div class="dialog-content">
+        <span class="close" onclick="closeShotDialog()">&times;</span>
+        <h2>Record Shot</h2>
+        <label for="playerSelect">Player:</label>
+        <select id="playerSelect"></select>
+        <label for="shotType">Shot Type:</label>
+        <select id="shotType">
+            <option value="Goal">Goal</option>
+            <option value="On Target">On Target</option>
+            <option value="Off Target">Off Target</option>
+        </select>
+        <button onclick="saveShot()">Save Shot</button>
     </div>
+</div>
 
-    <script src="script.js"></script>
+<!-- Dialog to view player stats -->
+<div id="playerStatsDialog" class="dialog">
+    <div class="dialog-content">
+        <span class="close" onclick="closePlayerStatsDialog()">&times;</span>
+        <h2>Player Stats</h2>
+        <div id="playerStatsFieldContainer">
+            <img src="hockey_field.png" alt="Hockey Field" id="playerStatsField">
+        </div>
+        <ul id="playerShotsList"></ul>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script src="script.js"></script>
 </body>
 </html>
