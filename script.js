@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let shotTarget = null;
     let matchActive = false;
     const shotsData = [];
+    let goalShotPosition = { x: 0, y: 0 }; // Variabile per memorizzare la posizione del tiro nella porta
 
     updateTeamSelectOptions();
     updatePlayerList();
@@ -107,12 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedPlayer.shots++;
         }
 
-        const goalRect = goalShotView.getBoundingClientRect();
-        const goalShotPosition = {
-            x: clickPosition.x - goalRect.left,
-            y: clickPosition.y - goalRect.top
-        };
-
         shotsData.push({ player: selectedPlayer, shotType, position: clickPosition, goalPosition: goalShotPosition });
 
         updatePlayerList();
@@ -136,13 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     goalShotView.addEventListener('click', event => {
         const rect = goalShotView.getBoundingClientRect();
-        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-
+        goalShotPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top }; // Aggiornamento della variabile globale
         const marker = document.createElement('div');
         marker.classList.add('marker');
-        marker.style.left = `${clickPosition.x}px`;
-        marker.style.top = `${clickPosition.y}px`;
-
+        marker.style.left = `${goalShotPosition.x}px`;
+        marker.style.top = `${goalShotPosition.y}px`;
         goalShotView.appendChild(marker);
     });
 
@@ -194,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.style.left = `${shot.position.x}px`;
             marker.style.top = `${shot.position.y}px`;
 
-            marker.addEventListener('click', () => {
+            marker.addEventListener('click, () => {
                 clearGoalShotView();
                 const goalMarker = document.createElement('div');
                 goalMarker.classList.add('marker');
