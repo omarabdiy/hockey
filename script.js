@@ -1,13 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const teams = [
-        {
-            name: 'Squadra Default',
-            players: [
-                { name: 'Mario', surname: 'Rossi', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 }
-            ]
-        }
-    ];
-
+    const teams = [];
     const teamSelect = document.getElementById('teamSelect');
     const createTeamButton = document.getElementById('createTeamButton');
     const playerList = document.getElementById('playerList');
@@ -21,24 +13,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerJerseyNumber = document.getElementById('playerJerseyNumber');
     const playerRole = document.getElementById('playerRole');
     const addPlayerButton = document.getElementById('addPlayerButton');
-
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
     const saveShotButton = document.getElementById('saveShotButton');
-
-    let currentTeam = teams[0];
+    let currentTeam = null;
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
 
-    updateTeamSelectOptions();
-    updatePlayerList();
+    // Load teams from JSON file
+    fetch('data/teams.json')
+        .then(response => response.json())
+        .then(data => {
+            teams.push(...data);
+            if (teams.length > 0) {
+                currentTeam = teams[0];
+            }
+            updateTeamSelectOptions();
+            updatePlayerList();
+        });
 
     createTeamButton.addEventListener('click', () => {
         const teamName = prompt('Inserisci il nome della nuova squadra:');
         if (teamName) {
-            teams.push({ name: teamName, players: [] });
+            const newTeam = { name: teamName, players: [] };
+            teams.push(newTeam);
+            currentTeam = newTeam;
             updateTeamSelectOptions();
+            saveTeamsData();
         }
     });
 
@@ -61,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         currentTeam.players.push(newPlayer);
         updatePlayerList();
+        saveTeamsData();
     });
 
     startMatchButton.addEventListener('click', () => {
@@ -71,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     saveShotButton.addEventListener('click', () => {
         const selectedPlayerName = playerSelect.value;
         const shotType = shotTypeSelect.value;
-
         const selectedPlayer = currentTeam.players.find(player => player.name === selectedPlayerName);
         if (shotType === 'G') {
             shots.goals++;
@@ -83,24 +85,21 @@ document.addEventListener('DOMContentLoaded', () => {
             shots.hits++;
             selectedPlayer.shots++;
         }
-
         updatePlayerList();
         updateStats(selectedPlayer, shotType);
-
         const marker = document.createElement('div');
         marker.classList.add('marker');
         marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
         marker.style.left = `${clickPosition.x}px`;
         marker.style.top = `${clickPosition.y}px`;
         hockeyField.appendChild(marker);
-
         shotPopup.style.display = 'none';
+        saveTeamsData();
     });
 
     function handleFieldClick(event) {
         const rect = hockeyField.getBoundingClientRect();
         clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
     }
@@ -117,22 +116,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePlayerList() {
         playerList.innerHTML = '';
-        currentTeam.players.forEach(player => {
-            const playerInfo = document.createElement('div');
-            playerInfo.classList.add('player-info');
-            playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
-            playerList.appendChild(playerInfo);
-        });
+        if (currentTeam) {
+            currentTeam.players.forEach(player => {
+                const playerInfo = document.createElement('div');
+                playerInfo.classList.add('player-info');
+                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
+                playerList.appendChild(playerInfo);
+            });
+        }
     }
 
     function updatePlayerSelectOptions() {
         playerSelect.innerHTML = '';
-        currentTeam.players.forEach(player => {
-            const option = document.createElement('option');
-            option.value = player.name;
-            option.textContent = `${player.name} (#${player.jerseyNumber})`;
-            playerSelect.appendChild(option);
-        });
+        if (currentTeam) {
+            currentTeam.players.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player.name;
+                option.textContent = `${player.name} (#${player.jerseyNumber})`;
+                playerSelect.appendChild(option);
+            });
+        }
     }
 
     function updateStats(player, shotType) {
@@ -144,5 +147,21 @@ document.addEventListener('DOMContentLoaded', () => {
             Tiri fuori: ${shots.misses}<br>
             Colpiti: ${shots.hits}
         `;
+    }
+
+    function saveTeamsData() {
+        const data = JSON.stringify(teams);
+        fetch('https://api.github.com/repos/{username}/{repository}/actions/workflows/save_data.yml/dispatches', {
+            method: 'POST',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`, // You need to set this token
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ref: 'main',
+                inputs: { data }
+            })
+        });
     }
 });
