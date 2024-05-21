@@ -28,22 +28,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
     const saveShotButton = document.getElementById('saveShotButton');
+    const goalShotView = document.getElementById('goalShotView');
 
     let currentTeam = teams[0];
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
     let shotTarget = null;
     let matchActive = false;
-    let shotsData = [];
+    const shotsData = [];
 
     updateTeamSelectOptions();
     updatePlayerList();
 
     createTeamButton.addEventListener('click', () => {
-        const teamName = prompt('Inserisci il nome della nuova squadra:');
+        const teamName = prompt('Nome della squadra:');
         if (teamName) {
-            teams.push({ name: teamName, players: [] });
+            const newTeam = { name: teamName, players: [] };
+            teams.push(newTeam);
             updateTeamSelectOptions();
+            teamSelect.value = teamName;
+            currentTeam = newTeam;
+            updatePlayerList();
         }
     });
 
@@ -102,7 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedPlayer.shots++;
         }
 
-        shotsData.push({ player: selectedPlayer, shotType, position: clickPosition });
+        const goalRect = goalShotView.getBoundingClientRect();
+        const goalShotPosition = {
+            x: clickPosition.x - goalRect.left,
+            y: clickPosition.y - goalRect.top
+        };
+
+        shotsData.push({ player: selectedPlayer, shotType, position: clickPosition, goalPosition: goalShotPosition });
 
         updatePlayerList();
         updateStats(selectedPlayer, shotType);
@@ -123,6 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
         shotPopup.style.display = 'none';
     });
 
+    goalShotView.addEventListener('click', event => {
+        const rect = goalShotView.getBoundingClientRect();
+        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+
+        const marker = document.createElement('div');
+        marker.classList.add('marker');
+        marker.style.left = `${clickPosition.x}px`;
+        marker.style.top = `${clickPosition.y}px`;
+
+        goalShotView.appendChild(marker);
+    });
+
     function handleFieldClick(event) {
         const rect = hockeyField.getBoundingClientRect();
         clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
@@ -130,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
+        clearGoalShotView();
     }
 
     function handleGoalViewClick(event) {
@@ -139,11 +163,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
+        clearGoalShotView();
     }
 
     function clearGoalView() {
         while (goalView.firstChild) {
             goalView.removeChild(goalView.firstChild);
+        }
+    }
+
+    function clearGoalShotView() {
+        while (goalShotView.firstChild) {
+            goalShotView.removeChild(goalShotView.firstChild);
         }
     }
 
@@ -162,7 +193,17 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.classList.add(shot.shotType === 'G' ? 'green' : shot.shotType === 'X' ? 'red' : 'blue');
             marker.style.left = `${shot.position.x}px`;
             marker.style.top = `${shot.position.y}px`;
-            goalView.appendChild(marker);
+
+            marker.addEventListener('click', () => {
+                clearGoalShotView();
+                const goalMarker = document.createElement('div');
+                goalMarker.classList.add('marker');
+                goalMarker.style.left = `${shot.goalPosition.x}px`;
+                goalMarker.style.top = `${shot.goalPosition.y}px`;
+                goalShotView.appendChild(goalMarker);
+            });
+
+            hockeyField.appendChild(marker);
         });
     }
 
