@@ -130,8 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = hockeyField.getBoundingClientRect();
         clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
         updatePlayerSelectOptions();
-        shotPopup.style.display
-= 'block';
+        shotPopup.style.display = 'block';
     }
 
     function updateTeamSelectOptions() {
