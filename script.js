@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickPosition = { x: 0, y: 0 };
 
     // Load teams from JSON file
-    fetch('data/teams.json')
+    fetch('teams.json')
         .then(response => response.json())
         .then(data => {
             teams.push(...data);
