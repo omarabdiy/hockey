@@ -16,14 +16,31 @@ body {
 #hockeyFieldContainer {
     margin-top: 20px;
     position: relative;
+    width: 600px; /* dimensioni per simulare proporzioni */
+    height: 300px; /* dimensioni per simulare proporzioni */
+    background-color: #e0e0e0;
+    border: 2px solid #000;
+}
+
+#goalViewContainer {
+    margin-top: 20px;
+    position: relative;
+    width: 183px; /* larghezza della porta */
+    height: 122px; /* altezza della porta */
+    background-color: #e0e0e0;
+    border: 2px solid #000;
 }
 
 #hockeyField {
-    width: 100%;
-    height: 400px;
-    background-color: #e0e0e0;
-    border: 2px solid #000;
     position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#goalView {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 #stats {
@@ -41,12 +58,15 @@ body {
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
+
 .marker.green {
     background-color: green;
 }
+
 .marker.red {
     background-color: red;
 }
+
 .marker.blue {
     background-color: blue;
 }
@@ -85,4 +105,60 @@ body {
     display: block;
     margin-bottom: 10px;
     width: 100%;
+}
+
+/* Linee e zone del campo */
+.linea {
+    position: absolute;
+    background-color: blue;
+    height: 2px;
+    width: 100%;
+}
+
+.linea-rossa {
+    background-color: red;
+    height: 2px;
+    width: 100%;
+}
+
+.linea-centrale {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.zona {
+    position: absolute;
+    height: 100%;
+    width: 33.3%;
+    border-right: 2px solid blue;
+}
+
+.zona:last-child {
+    border-right: none;
+}
+
+#hockeyField .zona:nth-child(2) {
+    border-left: 2px solid blue;
+    border-right: 2px solid blue;
+}
+
+.area-porta {
+    position: absolute;
+    border: 2px solid red;
+    border-radius: 50%;
+    width: 12.2%; /* proporzione 6.1m su 50m (larghezza campo) */
+    height: 20%; /* proporzione dell'altezza */
+    top: 40%;
+}
+
+.area-porta.sinistra {
+    left: -6.1%;
+}
+
+.area-porta.destra {
+    right: -6.1%;
+}
+
+#goalView {
+    border: 1px solid black;
 }
