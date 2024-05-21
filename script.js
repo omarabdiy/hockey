@@ -1,3 +1,22 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+import { getDatabase, ref, set, get, child, update } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBadeVqLzYNQ_5mSJzzai7XUUQ7c_F2oik",
+    authDomain: "stats-a563e.firebaseapp.com",
+    projectId: "stats-a563e",
+    storageBucket: "stats-a563e.appspot.com",
+    messagingSenderId: "38172856657",
+    appId: "1:38172856657:web:b67254ec35646010178370",
+    measurementId: "G-1GPB04G48C"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
 document.addEventListener('DOMContentLoaded', () => {
     const teams = [];
     const teamSelect = document.getElementById('teamSelect');
@@ -21,18 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
 
-    // Load teams from JSON file
-    fetch('teams.json')
-        .then(response => response.json())
-        .then(data => {
-            teams.push(...data);
+    // Reference to the database
+    const dbRef = ref(getDatabase());
+
+    // Load teams from Firebase
+    get(child(dbRef, `teams`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            for (let key in data) {
+                teams.push(data[key]);
+            }
             if (teams.length > 0) {
                 currentTeam = teams[0];
             }
             updateTeamSelectOptions();
             updatePlayerList();
-        })
-        .catch(error => console.error('Error loading teams:', error));
+        } else {
+            console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error("Error loading teams:", error);
+    });
 
     createTeamButton.addEventListener('click', () => {
         const teamName = prompt('Inserisci il nome della nuova squadra:');
@@ -102,7 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = hockeyField.getBoundingClientRect();
         clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
         updatePlayerSelectOptions();
-        shotPopup.style.display = 'block';
+        shotPopup.style.display
+= 'block';
     }
 
     function updateTeamSelectOptions() {
@@ -151,25 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function saveTeamsData() {
-        const data = JSON.stringify(teams);
-        fetch('https://api.github.com/repos/omarabdiy/hockey/actions/workflows/save_data.yml/dispatches', {
-            method: 'POST',
-            headers: {
-                'Authorization': `token OMAR`, // Utilizza il token impostato come secret
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ref: 'main',
-                inputs: { data }
+        set(ref(database, 'teams'), teams)
+            .then(() => {
+                console.log('Dati salvati con successo nel database Firebase');
             })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            console.log('Data saved successfully');
-        })
-        .catch(error => console.error('Error saving data:', error));
+            .catch((error) => {
+                console.error('Errore nel salvataggio dei dati:', error);
+            });
     }
 });
