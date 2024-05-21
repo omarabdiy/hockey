@@ -1,166 +1,148 @@
-const players = [];
-let currentShot = null;
+document.addEventListener('DOMContentLoaded', () => {
+    const teams = [
+        {
+            name: 'Squadra Default',
+            players: [
+                { name: 'Mario', surname: 'Rossi', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 }
+            ]
+        }
+    ];
 
-function addPlayer() {
-    const playerNameInput = document.getElementById('playerNameInput');
-    const playerName = playerNameInput.value.trim();
+    const teamSelect = document.getElementById('teamSelect');
+    const createTeamButton = document.getElementById('createTeamButton');
+    const playerList = document.getElementById('playerList');
+    const startMatchButton = document.getElementById('startMatchButton');
+    const hockeyField = document.getElementById('hockeyField');
+    const stats = document.getElementById('stats');
+    const playerForm = document.getElementById('playerForm');
+    const playerName = document.getElementById('playerName');
+    const playerSurname = document.getElementById('playerSurname');
+    const playerBirthdate = document.getElementById('playerBirthdate');
+    const playerJerseyNumber = document.getElementById('playerJerseyNumber');
+    const playerRole = document.getElementById('playerRole');
+    const addPlayerButton = document.getElementById('addPlayerButton');
 
-    if (playerName) {
-        const player = {
-            name: playerName,
+    const shotPopup = document.getElementById('shotPopup');
+    const playerSelect = document.getElementById('playerSelect');
+    const shotTypeSelect = document.getElementById('shotType');
+    const saveShotButton = document.getElementById('saveShotButton');
+
+    let currentTeam = teams[0];
+    let shots = { goals: 0, misses: 0, hits: 0 };
+    let clickPosition = { x: 0, y: 0 };
+
+    updateTeamSelectOptions();
+    updatePlayerList();
+
+    createTeamButton.addEventListener('click', () => {
+        const teamName = prompt('Inserisci il nome della nuova squadra:');
+        if (teamName) {
+            teams.push({ name: teamName, players: [] });
+            updateTeamSelectOptions();
+        }
+    });
+
+    teamSelect.addEventListener('change', () => {
+        const selectedTeamName = teamSelect.value;
+        currentTeam = teams.find(team => team.name === selectedTeamName);
+        updatePlayerList();
+    });
+
+    addPlayerButton.addEventListener('click', () => {
+        const newPlayer = {
+            name: playerName.value,
+            surname: playerSurname.value,
+            birthdate: playerBirthdate.value,
+            jerseyNumber: playerJerseyNumber.value,
+            role: playerRole.value,
             shots: 0,
-            shotDetails: []
+            goals: 0,
+            misses: 0
         };
-
-        players.push(player);
-        playerNameInput.value = '';
-        renderPlayers();
-    }
-}
-
-function addShot(index) {
-    players[index].shots++;
-    renderPlayers();
-}
-
-function renderPlayers() {
-    const playersList = document.getElementById('playersList');
-    playersList.innerHTML = '';
-
-    players.forEach((player, index) => {
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'player';
-
-        const playerName = document.createElement('span');
-        playerName.textContent = `${player.name} - Shots: ${player.shots}`;
-
-        const addShotButton = document.createElement('button');
-        addShotButton.textContent = 'Add Shot';
-        addShotButton.onclick = () => addShot(index);
-
-        const viewStatsButton = document.createElement('button');
-        viewStatsButton.textContent = 'View Stats';
-        viewStatsButton.onclick = () => viewPlayerStats(index);
-
-        playerDiv.appendChild(playerName);
-        playerDiv.appendChild(addShotButton);
-        playerDiv.appendChild(viewStatsButton);
-
-        playersList.appendChild(playerDiv);
-    });
-}
-
-function startNewGame() {
-    players.forEach(player => {
-        player.shots = 0;
-        player.shotDetails = [];
-    });
-    renderPlayers();
-    clearShots();
-}
-
-function recordShot(event) {
-    const overlay = document.getElementById('hockeyFieldOverlay');
-    const rect = overlay.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    currentShot = { x, y };
-
-    const playerSelect = document.getElementById('playerSelect');
-    playerSelect.innerHTML = '';
-
-    players.forEach((player, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = player.name;
-        playerSelect.appendChild(option);
+        currentTeam.players.push(newPlayer);
+        updatePlayerList();
     });
 
-    openShotDialog();
-}
-
-function openShotDialog() {
-    const dialog = document.getElementById('shotDialog');
-    dialog.style.display = 'flex';
-}
-
-function closeShotDialog() {
-    const dialog = document.getElementById('shotDialog');
-    dialog.style.display = 'none';
-}
-
-function saveShot() {
-    const playerSelect = document.getElementById('playerSelect');
-    const shotType = document.getElementById('shotType').value;
-    const playerIndex = playerSelect.value;
-
-    if (playerIndex !== '' && currentShot) {
-        const player = players[playerIndex];
-        player.shots++;
-        player.shotDetails.push({ ...currentShot, type: shotType });
-        renderPlayers();
-        renderShots();
-        closeShotDialog();
-    }
-}
-
-function clearShots() {
-    const markers = document.querySelectorAll('.shot-marker');
-    markers.forEach(marker => marker.remove());
-}
-
-function renderShots() {
-    const overlay = document.getElementById('hockeyFieldOverlay');
-    players.forEach(player => {
-        player.shotDetails.forEach(shot => {
-            const marker = document.createElement('div');
-            marker.className = 'shot-marker';
-            marker.style.left = `${shot.x}px`;
-            marker.style.top = `${shot.y}px`;
-            marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
-            overlay.appendChild(marker);
-        });
+    startMatchButton.addEventListener('click', () => {
+        alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
+        hockeyField.addEventListener('click', handleFieldClick);
     });
-}
 
-function viewPlayerStats(playerIndex) {
-    const player = players[playerIndex];
-    const playerStatsField = document.getElementById('playerStatsField');
-    const playerShotsList = document.getElementById('playerShotsList');
+    saveShotButton.addEventListener('click', () => {
+        const selectedPlayerName = playerSelect.value;
+        const shotType = shotTypeSelect.value;
 
-    clearPlayerStatsShots();
+        const selectedPlayer = currentTeam.players.find(player => player.name === selectedPlayerName);
+        if (shotType === 'G') {
+            shots.goals++;
+            selectedPlayer.goals++;
+        } else if (shotType === 'X') {
+            shots.misses++;
+            selectedPlayer.misses++;
+        } else if (shotType === 'H') {
+            shots.hits++;
+            selectedPlayer.shots++;
+        }
 
-    player.shotDetails.forEach(shot => {
+        updatePlayerList();
+        updateStats(selectedPlayer, shotType);
+
         const marker = document.createElement('div');
-        marker.className = 'shot-marker';
-        marker.style.left = `${shot.x}px`;
-        marker.style.top = `${shot.y}px`;
-        marker.textContent = shot.type === 'Goal' ? 'G' : (shot.type === 'On Target' ? 'X' : '-');
-        playerStatsField.parentNode.appendChild(marker);
+        marker.classList.add('marker');
+        marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
+        marker.style.left = `${clickPosition.x}px`;
+        marker.style.top = `${clickPosition.y}px`;
+        hockeyField.appendChild(marker);
+
+        shotPopup.style.display = 'none';
     });
 
-    const playerShotsListItem = document.createElement('li');
-    playerShotsListItem.textContent = `Player: ${player.name} - Shots: ${player.shots}`;
-    playerShotsList.innerHTML = '';
-    playerShotsList.appendChild(playerShotsListItem);
+    function handleFieldClick(event) {
+        const rect = hockeyField.getBoundingClientRect();
+        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
 
-    openPlayerStatsDialog();
-}
+        updatePlayerSelectOptions();
+        shotPopup.style.display = 'block';
+    }
 
-function clearPlayerStatsShots() {
-    const markers = document.querySelectorAll('#playerStatsFieldContainer .shot-marker');
-    markers.forEach(marker => marker.remove());
-}
+    function updateTeamSelectOptions() {
+        teamSelect.innerHTML = '';
+        teams.forEach(team => {
+            const option = document.createElement('option');
+            option.value = team.name;
+            option.textContent = team.name;
+            teamSelect.appendChild(option);
+        });
+    }
 
-function openPlayerStatsDialog() {
-    const dialog = document.getElementById('playerStatsDialog');
-    dialog.style.display = 'flex';
-}
+    function updatePlayerList() {
+        playerList.innerHTML = '';
+        currentTeam.players.forEach(player => {
+            const playerInfo = document.createElement('div');
+            playerInfo.classList.add('player-info');
+            playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
+            playerList.appendChild(playerInfo);
+        });
+    }
 
-function closePlayerStatsDialog() {
-    const dialog = document.getElementById('playerStatsDialog');
-    dialog.style.display = 'none';
-}
+    function updatePlayerSelectOptions() {
+        playerSelect.innerHTML = '';
+        currentTeam.players.forEach(player => {
+            const option = document.createElement('option');
+            option.value = player.name;
+            option.textContent = `${player.name} (#${player.jerseyNumber})`;
+            playerSelect.appendChild(option);
+        });
+    }
 
-document.getElementById('hockeyFieldOverlay').addEventListener('click', recordShot);
+    function updateStats(player, shotType) {
+        stats.innerHTML = `
+            Giocatore: ${player.name}<br>
+            Tipo di tiro: ${shotType}<br><br>
+            Statistiche:<br>
+            Gol: ${shots.goals}<br>
+            Tiri fuori: ${shots.misses}<br>
+            Colpiti: ${shots.hits}
+        `;
+    }
+});
