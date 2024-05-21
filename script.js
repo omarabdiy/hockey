@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let shotTarget = null;
     let matchActive = false;
     const shotsData = [];
-    let goalShotPosition = { x: 0, y: 0 };
 
     updateTeamSelectOptions();
     updatePlayerList();
@@ -108,6 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedPlayer.shots++;
         }
 
+        const goalRect = goalShotView.getBoundingClientRect();
+        const goalShotPosition = {
+            x: clickPosition.x - goalRect.left,
+            y: clickPosition.y - goalRect.top
+        };
+
         shotsData.push({ player: selectedPlayer, shotType, position: clickPosition, goalPosition: goalShotPosition });
 
         updatePlayerList();
@@ -131,11 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     goalShotView.addEventListener('click', event => {
         const rect = goalShotView.getBoundingClientRect();
-        goalShotPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+
         const marker = document.createElement('div');
         marker.classList.add('marker');
-        marker.style.left = `${goalShotPosition.x}px`;
-        marker.style.top = `${goalShotPosition.y}px`;
+        marker.style.left = `${clickPosition.x}px`;
+        marker.style.top = `${clickPosition.y}px`;
+
         goalShotView.appendChild(marker);
     });
 
@@ -143,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = hockeyField.getBoundingClientRect();
         clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
         shotTarget = hockeyField;
+
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
         clearGoalShotView();
@@ -152,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = goalView.getBoundingClientRect();
         clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
         shotTarget = goalView;
+
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
         clearGoalShotView();
@@ -185,8 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.style.left = `${shot.position.x}px`;
             marker.style.top = `${shot.position.y}px`;
 
-            marker.addEventListener('click', ()
-{
+            marker.addEventListener('click', () => {
                 clearGoalShotView();
                 const goalMarker = document.createElement('div');
                 goalMarker.classList.add('marker');
