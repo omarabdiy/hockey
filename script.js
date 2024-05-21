@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createTeamButton = document.getElementById('createTeamButton');
     const playerList = document.getElementById('playerList');
     const startMatchButton = document.getElementById('startMatchButton');
+    const pauseMatchButton = document.getElementById('pauseMatchButton');
     const hockeyField = document.getElementById('hockeyField');
     const goalView = document.getElementById('goalView');
     const stats = document.getElementById('stats');
@@ -32,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
     let shotTarget = null;
+    let matchActive = false;
+    let shotsData = [];
 
     updateTeamSelectOptions();
     updatePlayerList();
@@ -45,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     teamSelect.addEventListener('change', () => {
-        const selectedTeamName = teamSelect.value;
-        currentTeam = teams.find(team => team.name === selectedTeamName);
+        currentTeam = teams.find(team => team.name === teamSelect.value);
         updatePlayerList();
     });
 
@@ -63,12 +65,25 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         currentTeam.players.push(newPlayer);
         updatePlayerList();
+        updatePlayerSelectOptions();
     });
 
     startMatchButton.addEventListener('click', () => {
-        alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
-        hockeyField.addEventListener('click', handleFieldClick);
-        goalView.addEventListener('click', handleGoalViewClick);
+        if (!matchActive) {
+            alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
+            matchActive = true;
+            hockeyField.addEventListener('click', handleFieldClick);
+            goalView.addEventListener('click', handleGoalViewClick);
+        }
+    });
+
+    pauseMatchButton.addEventListener('click', () => {
+        if (matchActive) {
+            matchActive = false;
+            hockeyField.removeEventListener('click', handleFieldClick);
+            goalView.removeEventListener('click', handleGoalViewClick);
+            displayShotSelection();
+        }
     });
 
     saveShotButton.addEventListener('click', () => {
@@ -87,6 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedPlayer.shots++;
         }
 
+        shotsData.push({ player: selectedPlayer, shotType, position: clickPosition });
+
         updatePlayerList();
         updateStats(selectedPlayer, shotType);
 
@@ -99,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (shotTarget === hockeyField) {
             hockeyField.appendChild(marker);
         } else if (shotTarget === goalView) {
+            clearGoalView();
             goalView.appendChild(marker);
         }
 
@@ -121,6 +139,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
+    }
+
+    function clearGoalView() {
+        while (goalView.firstChild) {
+            goalView.removeChild(goalView.firstChild);
+        }
+    }
+
+    function displayShotSelection() {
+        const playerName = prompt('Inserisci il nome del giocatore per vedere i tiri (lascia vuoto per vedere tutti):');
+        clearGoalView();
+
+        let shotsToDisplay = shotsData;
+        if (playerName) {
+            shotsToDisplay = shotsData.filter(shot => shot.player.name === playerName);
+        }
+
+        shotsToDisplay.forEach(shot => {
+            const marker = document.createElement('div');
+            marker.classList.add('marker');
+            marker.classList.add(shot.shotType === 'G' ? 'green' : shot.shotType === 'X' ? 'red' : 'blue');
+            marker.style.left = `${shot.position.x}px`;
+            marker.style.top = `${shot.position.y}px`;
+            goalView.appendChild(marker);
+        });
     }
 
     function updateTeamSelectOptions() {
