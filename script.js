@@ -151,10 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveTeamsData() {
         const data = JSON.stringify(teams);
-        fetch('https://api.github.com/repos/{username}/{repository}/actions/workflows/save_data.yml/dispatches', {
+        fetch('https://api.github.com/repos/{omarabdiy}/{hockey}/actions/workflows/save_data.yml/dispatches', {
             method: 'POST',
             headers: {
-                'Authorization': `token ${GITHUB_TOKEN}`, // You need to set this token
+                'Authorization': `token ${OMAR}`, // You need to set this token
                 'Accept': 'application/vnd.github.v3+json',
                 'Content-Type': 'application/json'
             },
