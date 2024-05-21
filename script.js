@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateTeamSelectOptions();
             updatePlayerList();
-        });
+        })
+        .catch(error => console.error('Error loading teams:', error));
 
     createTeamButton.addEventListener('click', () => {
         const teamName = prompt('Inserisci il nome della nuova squadra:');
@@ -151,10 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveTeamsData() {
         const data = JSON.stringify(teams);
-        fetch('https://api.github.com/repos/{omarabdiy}/{hockey}/actions/workflows/save_data.yml/dispatches', {
+        fetch('https://api.github.com/repos/omarabdiy/hockey/actions/workflows/save_data.yml/dispatches', {
             method: 'POST',
             headers: {
-                'Authorization': `token ${OMAR}`, // You need to set this token
+                'Authorization': `token OMAR`, // Utilizza il token impostato come secret
                 'Accept': 'application/vnd.github.v3+json',
                 'Content-Type': 'application/json'
             },
@@ -162,6 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 ref: 'main',
                 inputs: { data }
             })
-        });
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log('Data saved successfully');
+        })
+        .catch(error => console.error('Error saving data:', error));
     }
 });
