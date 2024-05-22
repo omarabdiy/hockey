@@ -23,14 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerJerseyNumber = document.getElementById('playerJerseyNumber');
     const playerRole = document.getElementById('playerRole');
     const addPlayerButton = document.getElementById('addPlayerButton');
+
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
-    const goalShotView = document.getElementById('goalShotView');
-    const noGoalPosition = document.getElementById('noGoalPosition');
     const saveShotButton = document.getElementById('saveShotButton');
+    const goalShotView = document.getElementById('goalShotView');
 
     let currentTeam = teams[0];
+    let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
     let shotTarget = null;
     let matchActive = false;
@@ -77,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
             matchActive = true;
             hockeyField.addEventListener('click', handleFieldClick);
+            goalView.addEventListener('click', handleGoalViewClick);
         }
     });
 
@@ -84,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (matchActive) {
             matchActive = false;
             hockeyField.removeEventListener('click', handleFieldClick);
+            goalView.removeEventListener('click', handleGoalViewClick);
             displayShotSelection();
         }
     });
@@ -94,21 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const selectedPlayer = currentTeam.players.find(player => player.name === selectedPlayerName);
         if (shotType === 'G') {
+            shots.goals++;
             selectedPlayer.goals++;
         } else if (shotType === 'X') {
+            shots.misses++;
             selectedPlayer.misses++;
         } else if (shotType === 'H') {
+            shots.hits++;
             selectedPlayer.shots++;
         }
 
-        let goalShotPosition = null;
-        if (!noGoalPosition.checked) {
-            const goalRect = goalShotView.getBoundingClientRect();
-            goalShotPosition = {
-                x: clickPosition.x - goalRect.left,
-                y: clickPosition.y - goalRect.top
-            };
-        }
+        const goalRect = goalShotView.getBoundingClientRect();
+        const goalShotPosition = {
+            x: clickPosition.x - goalRect.left,
+            y: clickPosition.y - goalRect.top
+        };
 
         shotsData.push({ player: selectedPlayer, shotType, position: clickPosition, goalPosition: goalShotPosition });
 
@@ -120,27 +123,27 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
         marker.style.left = `${clickPosition.x}px`;
         marker.style.top = `${clickPosition.y}px`;
-        marker.addEventListener('click', () => showShotDetails(marker));
 
-        hockeyField.appendChild(marker);
+        if (shotTarget === hockeyField) {
+            hockeyField.appendChild(marker);
+        } else if (shotTarget === goalView) {
+            clearGoalView();
+            goalView.appendChild(marker);
+        }
 
         shotPopup.style.display = 'none';
     });
 
     goalShotView.addEventListener('click', event => {
-        if (!noGoalPosition.checked) {
-            const rect = goalShotView.getBoundingClientRect();
-            clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+        const rect = goalShotView.getBoundingClientRect();
+        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
 
-            clearGoalShotView();
+        const marker = document.createElement('div');
+        marker.classList.add('marker');
+        marker.style.left = `${clickPosition.x}px`;
+        marker.style.top = `${clickPosition.y}px`;
 
-            const marker = document.createElement('div');
-            marker.classList.add('marker');
-            marker.style.left = `${clickPosition.x}px`;
-            marker.style.top = `${clickPosition.y}px`;
-
-            goalShotView.appendChild(marker);
-        }
+        goalShotView.appendChild(marker);
     });
 
     function handleFieldClick(event) {
@@ -151,6 +154,22 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
         clearGoalShotView();
+    }
+
+    function handleGoalViewClick(event) {
+        const rect = goalView.getBoundingClientRect();
+        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+        shotTarget = goalView;
+
+        updatePlayerSelectOptions();
+        shotPopup.style.display = 'block';
+        clearGoalShotView();
+    }
+
+    function clearGoalView() {
+        while (goalView.firstChild) {
+            goalView.removeChild(goalView.firstChild);
+        }
     }
 
     function clearGoalShotView() {
@@ -175,27 +194,19 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.style.left = `${shot.position.x}px`;
             marker.style.top = `${shot.position.y}px`;
 
-            marker.addEventListener('click', () => showShotDetails(marker, shot));
+            marker.addEventListener('click', () => {
+                clearGoalShotView();
+                if (shot.goalPosition) {
+                    const goalMarker = document.createElement('div');
+                    goalMarker.classList.add('marker');
+                    goalMarker.style.left = `${shot.goalPosition.x}px`;
+                    goalMarker.style.top = `${shot.goalPosition.y}px`;
+                    goalShotView.appendChild(goalMarker);
+                }
+            });
 
             hockeyField.appendChild(marker);
         });
-    }
-
-    function clearGoalView() {
-        while (goalView.firstChild) {
-            goalView.removeChild(goalView.firstChild);
-        }
-    }
-
-    function showShotDetails(marker, shot) {
-        clearGoalShotView();
-        if (shot.goalPosition) {
-            const goalMarker = document.createElement('div');
-            goalMarker.classList.add('marker');
-            goalMarker.style.left = `${shot.goalPosition.x}px`;
-            goalMarker.style.top = `${shot.goalPosition.y}px`;
-            goalShotView.appendChild(goalMarker);
-        }
     }
 
     function updateTeamSelectOptions() {
@@ -233,9 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
             Giocatore: ${player.name}<br>
             Tipo di tiro: ${shotType}<br><br>
             Statistiche:<br>
-            Gol: ${player.goals}<br>
-            Tiri fuori: ${player.misses}<br>
-            Colpiti: ${player.shots}
+            Gol: ${shots.goals}<br>
+            Tiri fuori: ${shots.misses}<br>
+            Colpiti: ${shots.hits}
         `;
     }
 });
