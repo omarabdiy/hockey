@@ -1,183 +1,130 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f4f4f4;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-#app {
-    max-width: 800px;
-    margin: auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#hockeyFieldContainer {
-    margin-top: 20px;
-    position: relative;
-    width: 600px; /* dimensioni per simulare proporzioni */
-    height: 300px; /* dimensioni per simulare proporzioni */
-    background-color: #e0e0e0;
-    border: 2px solid #000;
-}
-
-#goalViewContainer {
-    margin-top: 20px;
-    position: relative;
-    width: 183px; /* larghezza della porta */
-    height: 122px; /* altezza della porta */
-    background-color: #e0e0e0;
-    border: 2px solid #000;
-}
-
-#hockeyField {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-#goalView {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-#stats {
-    margin-top: 20px;
-}
-
-.player-info {
-    margin-bottom: 5px;
-}
-
-.marker {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.marker.green {
-    background-color: green;
-}
-
-.marker.red {
-    background-color: red;
-}
-
-.marker.blue {
-    background-color: blue;
-}
-
-#playerForm {
-    margin-top: 20px;
-}
-
-#playerForm input {
-    display: block;
-    margin-bottom: 10px;
-    width: calc(100% - 22px);
-    padding: 10px;
-}
-
-#playerForm button {
-    padding: 10px;
-    width: 100%;
-}
-
-.popup {
-    display: none;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+.container {
     background: white;
     padding: 20px;
+    border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    width: 300px;
+    text-align: center;
 }
 
-.popup label,
-.popup select,
-.popup button {
-    display: block;
+h1 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: calc(100% - 22px);
     margin-bottom: 10px;
-    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-#goalShotContainer {
+button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.player span {
+    font-size: 16px;
+}
+
+.player button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.player button:hover {
+    background-color: #0056b3;
+}
+
+#fieldContainer {
     margin-top: 20px;
-    position: relative;
-    width: 183px; /* larghezza della porta */
-    height: 122px; /* altezza della porta */
-    background-color: #e0e0e0;
-    border: 2px solid #000;
 }
 
-#goalShotView {
-    position: relative;
+#hockeyField, #playerStatsField {
+    width: 100%;
+    cursor: crosshair;
+}
+
+.dialog {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
 }
 
-#goalShotView .marker {
-    background-color: yellow;
+.dialog-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 8px;
 }
 
-/* Linee e zone del campo */
-.linea {
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.shot-marker {
     position: absolute;
-    background-color: blue;
-    height: 2px;
-    width: 100%;
-}
-
-.linea-rossa {
-    background-color: red;
-    height: 2px;
-    width: 100%;
-}
-
-.linea-centrale {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.zona {
-    position: absolute;
-    height: 100%;
-    width: 33.3%;
-    border-right: 2px solid blue;
-}
-
-.zona:last-child {
-    border-right: none;
-}
-
-#hockeyField .zona:nth-child(2) {
-    border-left: 2px solid blue;
-    border-right: 2px solid blue;
-}
-
-.area-porta {
-    position: absolute;
-    border: 2px solid red;
-    border-radius: 50%;
-    width: 12.2%; /* proporzione 6.1m su 50m (larghezza campo) */
-    height: 20%; /* proporzione dell'altezza */
-    top: 40%;
-}
-
-.area-porta.sinistra {
-    left: -6.1%;
-}
-
-.area-porta.destra {
-    right: -6.1%;
-}
-
-#goalView {
-    border: 1px solid black;
+    font-weight: bold;
+    font-size: 20px;
+    color: red;
 }
