@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerJerseyNumber = document.getElementById('playerJerseyNumber');
     const playerRole = document.getElementById('playerRole');
     const addPlayerButton = document.getElementById('addPlayerButton');
-
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
@@ -121,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
         marker.style.left = `${clickPosition.x}px`;
         marker.style.top = `${clickPosition.y}px`;
+        marker.addEventListener('click', () => showShotDetails(marker));
 
         hockeyField.appendChild(marker);
 
@@ -175,16 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.style.left = `${shot.position.x}px`;
             marker.style.top = `${shot.position.y}px`;
 
-            marker.addEventListener('click', () => {
-                clearGoalShotView();
-                if (shot.goalPosition) {
-                    const goalMarker = document.createElement('div');
-                    goalMarker.classList.add('marker');
-                    goalMarker.style.left = `${shot.goalPosition.x}px`;
-                    goalMarker.style.top = `${shot.goalPosition.y}px`;
-                    goalShotView.appendChild(goalMarker);
-                }
-            });
+            marker.addEventListener('click', () => showShotDetails(marker, shot));
 
             hockeyField.appendChild(marker);
         });
@@ -193,6 +184,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function clearGoalView() {
         while (goalView.firstChild) {
             goalView.removeChild(goalView.firstChild);
+        }
+    }
+
+    function showShotDetails(marker, shot) {
+        clearGoalShotView();
+        if (shot.goalPosition) {
+            const goalMarker = document.createElement('div');
+            goalMarker.classList.add('marker');
+            goalMarker.style.left = `${shot.goalPosition.x}px`;
+            goalMarker.style.top = `${shot.goalPosition.y}px`;
+            goalShotView.appendChild(goalMarker);
         }
     }
 
