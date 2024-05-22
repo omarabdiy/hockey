@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
-    const saveShotButton = document.getElementById('saveShotButton');
     const goalShotView = document.getElementById('goalShotView');
+    const noGoalPosition = document.getElementById('noGoalPosition');
+    const saveShotButton = document.getElementById('saveShotButton');
 
     let currentTeam = teams[0];
-    let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
     let shotTarget = null;
     let matchActive = false;
@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
             matchActive = true;
             hockeyField.addEventListener('click', handleFieldClick);
-            goalView.addEventListener('click', handleGoalViewClick);
         }
     });
 
@@ -86,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (matchActive) {
             matchActive = false;
             hockeyField.removeEventListener('click', handleFieldClick);
-            goalView.removeEventListener('click', handleGoalViewClick);
             displayShotSelection();
         }
     });
@@ -97,21 +95,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const selectedPlayer = currentTeam.players.find(player => player.name === selectedPlayerName);
         if (shotType === 'G') {
-            shots.goals++;
             selectedPlayer.goals++;
         } else if (shotType === 'X') {
-            shots.misses++;
             selectedPlayer.misses++;
         } else if (shotType === 'H') {
-            shots.hits++;
             selectedPlayer.shots++;
         }
 
-        const goalRect = goalShotView.getBoundingClientRect();
-        const goalShotPosition = {
-            x: clickPosition.x - goalRect.left,
-            y: clickPosition.y - goalRect.top
-        };
+        let goalShotPosition = null;
+        if (!noGoalPosition.checked) {
+            const goalRect = goalShotView.getBoundingClientRect();
+            goalShotPosition = {
+                x: clickPosition.x - goalRect.left,
+                y: clickPosition.y - goalRect.top
+            };
+        }
 
         shotsData.push({ player: selectedPlayer, shotType, position: clickPosition, goalPosition: goalShotPosition });
 
@@ -124,26 +122,25 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.style.left = `${clickPosition.x}px`;
         marker.style.top = `${clickPosition.y}px`;
 
-        if (shotTarget === hockeyField) {
-            hockeyField.appendChild(marker);
-        } else if (shotTarget === goalView) {
-            clearGoalView();
-            goalView.appendChild(marker);
-        }
+        hockeyField.appendChild(marker);
 
         shotPopup.style.display = 'none';
     });
 
     goalShotView.addEventListener('click', event => {
-        const rect = goalShotView.getBoundingClientRect();
-        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+        if (!noGoalPosition.checked) {
+            const rect = goalShotView.getBoundingClientRect();
+            clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
 
-        const marker = document.createElement('div');
-        marker.classList.add('marker');
-        marker.style.left = `${clickPosition.x}px`;
-        marker.style.top = `${clickPosition.y}px`;
+            clearGoalShotView();
 
-        goalShotView.appendChild(marker);
+            const marker = document.createElement('div');
+            marker.classList.add('marker');
+            marker.style.left = `${clickPosition.x}px`;
+            marker.style.top = `${clickPosition.y}px`;
+
+            goalShotView.appendChild(marker);
+        }
     });
 
     function handleFieldClick(event) {
@@ -154,22 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
         clearGoalShotView();
-    }
-
-    function handleGoalViewClick(event) {
-        const rect = goalView.getBoundingClientRect();
-        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-        shotTarget = goalView;
-
-        updatePlayerSelectOptions();
-        shotPopup.style.display = 'block';
-        clearGoalShotView();
-    }
-
-    function clearGoalView() {
-        while (goalView.firstChild) {
-            goalView.removeChild(goalView.firstChild);
-        }
     }
 
     function clearGoalShotView() {
@@ -196,15 +177,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             marker.addEventListener('click', () => {
                 clearGoalShotView();
-                const goalMarker = document.createElement('div');
-                goalMarker.classList.add('marker');
-                goalMarker.style.left = `${shot.goalPosition.x}px`;
-                goalMarker.style.top = `${shot.goalPosition.y}px`;
-                goalShotView.appendChild(goalMarker);
+                if (shot.goalPosition) {
+                    const goalMarker = document.createElement('div');
+                    goalMarker.classList.add('marker');
+                    goalMarker.style.left = `${shot.goalPosition.x}px`;
+                    goalMarker.style.top = `${shot.goalPosition.y}px`;
+                    goalShotView.appendChild(goalMarker);
+                }
             });
 
             hockeyField.appendChild(marker);
         });
+    }
+
+    function clearGoalView() {
+        while (goalView.firstChild) {
+            goalView.removeChild(goalView.firstChild);
+        }
     }
 
     function updateTeamSelectOptions() {
@@ -242,9 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
             Giocatore: ${player.name}<br>
             Tipo di tiro: ${shotType}<br><br>
             Statistiche:<br>
-            Gol: ${shots.goals}<br>
-            Tiri fuori: ${shots.misses}<br>
-            Colpiti: ${shots.hits}
+            Gol: ${player.goals}<br>
+            Tiri fuori: ${player.misses}<br>
+            Colpiti: ${player.shots}
         `;
     }
 });
