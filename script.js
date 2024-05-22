@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createTeamButton = document.getElementById('createTeamButton');
     const playerList = document.getElementById('playerList');
     const startMatchButton = document.getElementById('startMatchButton');
+    const pauseMatchButton = document.getElementById('pauseMatchButton');
     const hockeyField = document.getElementById('hockeyField');
     const goalView = document.getElementById('goalView');
     const stats = document.getElementById('stats');
@@ -27,26 +28,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
     const saveShotButton = document.getElementById('saveShotButton');
+    const goalShotView = document.getElementById('goalShotView');
 
     let currentTeam = teams[0];
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
     let shotTarget = null;
+    let matchActive = false;
+    const shotsData = [];
 
     updateTeamSelectOptions();
     updatePlayerList();
 
     createTeamButton.addEventListener('click', () => {
-        const teamName = prompt('Inserisci il nome della nuova squadra:');
+        const teamName = prompt('Nome della squadra:');
         if (teamName) {
-            teams.push({ name: teamName, players: [] });
+            const newTeam = { name: teamName, players: [] };
+            teams.push(newTeam);
             updateTeamSelectOptions();
+            teamSelect.value = teamName;
+            currentTeam = newTeam;
+            updatePlayerList();
         }
     });
 
     teamSelect.addEventListener('change', () => {
-        const selectedTeamName = teamSelect.value;
-        currentTeam = teams.find(team => team.name === selectedTeamName);
+        currentTeam = teams.find(team => team.name === teamSelect.value);
         updatePlayerList();
     });
 
@@ -63,12 +70,23 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         currentTeam.players.push(newPlayer);
         updatePlayerList();
+        updatePlayerSelectOptions();
     });
 
     startMatchButton.addEventListener('click', () => {
-        alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
-        hockeyField.addEventListener('click', handleFieldClick);
-        goalView.addEventListener('click', handleGoalViewClick);
+        if (!matchActive) {
+            alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
+            matchActive = true;
+            hockeyField.addEventListener('click', handleFieldClick);
+        }
+    });
+
+    pauseMatchButton.addEventListener('click', () => {
+        if (matchActive) {
+            matchActive = false;
+            hockeyField.removeEventListener('click', handleFieldClick);
+            displayShotSelection();
+        }
     });
 
     saveShotButton.addEventListener('click', () => {
@@ -87,6 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedPlayer.shots++;
         }
 
+        const goalRect = goalShotView.getBoundingClientRect();
+        const goalShotPosition = {
+            x: clickPosition.x,
+            y: clickPosition.y
+        };
+
+        shotsData.push({ player: selectedPlayer, shotType, position: clickPosition, goalPosition: goalShotPosition });
+
         updatePlayerList();
         updateStats(selectedPlayer, shotType);
 
@@ -96,13 +122,22 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.style.left = `${clickPosition.x}px`;
         marker.style.top = `${clickPosition.y}px`;
 
-        if (shotTarget === hockeyField) {
-            hockeyField.appendChild(marker);
-        } else if (shotTarget === goalView) {
-            goalView.appendChild(marker);
-        }
+        hockeyField.appendChild(marker);
 
         shotPopup.style.display = 'none';
+    });
+
+    goalShotView.addEventListener('click', event => {
+        const rect = goalShotView.getBoundingClientRect();
+        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+
+        const marker = document.createElement('div');
+        marker.classList.add('marker');
+        marker.style.left = `${clickPosition.x}px`;
+        marker.style.top = `${clickPosition.y}px`;
+
+        clearGoalShotView();
+        goalShotView.appendChild(marker);
     });
 
     function handleFieldClick(event) {
@@ -112,15 +147,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
+        clearGoalShotView();
     }
 
-    function handleGoalViewClick(event) {
-        const rect = goalView.getBoundingClientRect();
-        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-        shotTarget = goalView;
+    function clearGoalView() {
+        while (goalView.firstChild) {
+            goalView.removeChild(goalView.firstChild);
+        }
+    }
 
-        updatePlayerSelectOptions();
-        shotPopup.style.display = 'block';
+    function clearGoalShotView() {
+        while (goalShotView.firstChild) {
+            goalShotView.removeChild(goalShotView.firstChild);
+        }
+    }
+
+    function displayShotSelection() {
+        const playerName = prompt('Inserisci il nome del giocatore per vedere i tiri (lascia vuoto per vedere tutti):');
+        clearGoalView();
+
+        let shotsToDisplay = shotsData;
+        if (playerName) {
+            shotsToDisplay = shotsData.filter(shot => shot.player.name === playerName);
+        }
+
+        shotsToDisplay.forEach(shot => {
+            const marker = document.createElement('div');
+            marker.classList.add('marker');
+            marker.classList.add(shot.shotType === 'G' ? 'green' : shot.shotType === 'X' ? 'red' : 'blue');
+            marker.style.left = `${shot.position.x}px`;
+            marker.style.top = `${shot.position.y}px`;
+
+            marker.addEventListener('click', () => {
+                clearGoalShotView();
+                const goalMarker = document.createElement('div');
+                goalMarker.classList.add('marker');
+                goalMarker.style.left = `${shot.goalPosition.x}px`;
+                goalMarker.style.top = `${shot.goalPosition.y}px`;
+                goalShotView.appendChild(goalMarker);
+            });
+
+            hockeyField.appendChild(marker);
+        });
     }
 
     function updateTeamSelectOptions() {
