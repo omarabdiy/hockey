@@ -3,59 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hockey Stats</title>
+    <title>Stats App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="container">
-    <h1>Hockey Player Stats</h1>
-    <!-- Form to add players -->
-    <div class="form-group">
-        <input type="text" id="playerNameInput" placeholder="Enter player name">
-        <button onclick="addPlayer()">Add Player</button>
-    </div>
-    <!-- List of players -->
-    <div id="playersList"></div>
-    <!-- Button to start a new game -->
-    <button onclick="startNewGame()">Start New Game</button>
-    <!-- Hockey field image to record shots -->
-    <div id="fieldContainer" style="position: relative;">
-        <h2>Hockey Field</h2>
-        <div id="hockeyFieldOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" onclick="recordShot(event)"></div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Icehockeylayout.svg/310px-Icehockeylayout.svg.png" alt="Hockey Field" id="hockeyField">
-    </div>
-</div>
-
-<!-- Dialog to record shot -->
-<div id="shotDialog" class="dialog">
-    <div class="dialog-content">
-        <span class="close" onclick="closeShotDialog()">&times;</span>
-        <h2>Record Shot</h2>
-        <label for="playerSelect">Player:</label>
-        <select id="playerSelect"></select>
-        <label for="shotType">Shot Type:</label>
-        <select id="shotType">
-            <option value="Goal">Goal</option>
-            <option value="On Target">On Target</option>
-            <option value="Off Target">Off Target</option>
-        </select>
-        <button onclick="saveShot()">Save Shot</button>
-    </div>
-</div>
-
-<!-- Dialog to view player stats -->
-<div id="playerStatsDialog" class="dialog">
-    <div class="dialog-content">
-        <span class="close" onclick="closePlayerStatsDialog()">&times;</span>
-        <h2>Player Stats</h2>
-        <div id="playerStatsFieldContainer">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Icehockeylayout.svg/310px-Icehockeylayout.svg.png" alt="Hockey Field" id="playerStatsField">
+    <div id="app">
+        <h1>Stats App</h1>
+        <div id="team-selection">
+            <select id="teamSelect"></select>
+            <button id="createTeamButton">Crea Squadra</button>
         </div>
-        <ul id="playerShotsList"></ul>
+        <div id="playerList"></div>
+        <div id="playerForm">
+            <h3>Aggiungi Giocatore</h3>
+            <input type="text" id="playerName" placeholder="Nome">
+            <input type="text" id="playerSurname" placeholder="Cognome">
+            <input type="date" id="playerBirthdate" placeholder="Data di Nascita">
+            <input type="number" id="playerJerseyNumber" placeholder="Numero Maglia">
+            <input type="text" id="playerRole" placeholder="Ruolo">
+            <button id="addPlayerButton">Aggiungi Giocatore</button>
+        </div>
+        <button id="startMatchButton">Avvia Partita</button>
+        <button id="pauseMatchButton">Pausa/Termina Partita</button>
+        <div id="hockeyFieldContainer">
+            <div id="hockeyField">
+                <div class="zona"></div>
+                <div class="zona"></div>
+                <div class="zona"></div>
+                <div class="linea linea-centrale"></div>
+                <div class="area-porta sinistra"></div>
+                <div class="area-porta destra"></div>
+            </div>
+        </div>
+        <div id="goalViewContainer">
+            <div id="goalView"></div>
+        </div>
+        <div id="stats"></div>
     </div>
-</div>
-
-<!-- JavaScript -->
-<script src="script.js"></script>
+    <div id="shotPopup" class="popup">
+        <label for="playerSelect">Seleziona Giocatore:</label>
+        <select id="playerSelect"></select>
+        <label for="shotType">Tipo di Tiro:</label>
+        <select id="shotType">
+            <option value="G">Gol</option>
+            <option value="X">Tiro Fuori</option>
+            <option value="H">Colpito</option>
+        </select>
+        <div id="goalShotContainer">
+            <label>Seleziona dove è finito il tiro nella porta:</label>
+            <div id="goalShotView"></div>
+        </div>
+        <button id="saveShotButton">Salva</button>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
