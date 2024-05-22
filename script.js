@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
             matchActive = true;
             hockeyField.addEventListener('click', handleFieldClick);
-            goalView.addEventListener('click', handleGoalViewClick);
         }
     });
 
@@ -86,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (matchActive) {
             matchActive = false;
             hockeyField.removeEventListener('click', handleFieldClick);
-            goalView.removeEventListener('click', handleGoalViewClick);
             displayShotSelection();
         }
     });
@@ -109,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const goalRect = goalShotView.getBoundingClientRect();
         const goalShotPosition = {
-            x: clickPosition.x - goalRect.left,
-            y: clickPosition.y - goalRect.top
+            x: clickPosition.x,
+            y: clickPosition.y
         };
 
         shotsData.push({ player: selectedPlayer, shotType, position: clickPosition, goalPosition: goalShotPosition });
@@ -124,12 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.style.left = `${clickPosition.x}px`;
         marker.style.top = `${clickPosition.y}px`;
 
-        if (shotTarget === hockeyField) {
-            hockeyField.appendChild(marker);
-        } else if (shotTarget === goalView) {
-            clearGoalView();
-            goalView.appendChild(marker);
-        }
+        hockeyField.appendChild(marker);
 
         shotPopup.style.display = 'none';
     });
@@ -143,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.style.left = `${clickPosition.x}px`;
         marker.style.top = `${clickPosition.y}px`;
 
+        clearGoalShotView();
         goalShotView.appendChild(marker);
     });
 
@@ -150,16 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = hockeyField.getBoundingClientRect();
         clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
         shotTarget = hockeyField;
-
-        updatePlayerSelectOptions();
-        shotPopup.style.display = 'block';
-        clearGoalShotView();
-    }
-
-    function handleGoalViewClick(event) {
-        const rect = goalView.getBoundingClientRect();
-        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-        shotTarget = goalView;
 
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
