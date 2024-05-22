@@ -3,46 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats App</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Campo da Hockey</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff;
+            margin: 0;
+        }
+
+        .hockey-field {
+            position: relative;
+            width: 600px; /* Larghezza del campo */
+            height: 300px; /* Lunghezza del campo */
+            background-color: #a2d5f2;
+            border: 5px solid #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .line {
+            position: absolute;
+            background-color: #fff;
+        }
+
+        .center-line {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            transform: translateY(-50%);
+        }
+
+        .goal-line {
+            height: 2px;
+            width: 100%;
+        }
+
+        .goal-line.top {
+            top: 5%;
+        }
+
+        .goal-line.bottom {
+            bottom: 5%;
+        }
+
+        .goal-crease {
+            position: absolute;
+            width: 40px; /* Larghezza dell'area di crease */
+            height: 20px; /* Altezza dell'area di crease */
+            background-color: rgba(255, 0, 0, 0.5);
+            border-radius: 50% / 100%;
+        }
+
+        .goal-crease.top {
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .goal-crease.bottom {
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .circle {
+            position: absolute;
+            width: 20px; /* Diametro del cerchio */
+            height: 20px; /* Diametro del cerchio */
+            background-color: #fff;
+            border-radius: 50%;
+        }
+
+        .circle.center {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .circle.top-left {
+            top: 15%;
+            left: 15%;
+        }
+
+        .circle.top-right {
+            top: 15%;
+            right: 15%;
+        }
+
+        .circle.bottom-left {
+            bottom: 15%;
+            left: 15%;
+        }
+
+        .circle.bottom-right {
+            bottom: 15%;
+            right: 15%;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <h1>Stats App</h1>
-        <div id="team-selection">
-            <select id="teamSelect"></select>
-            <button id="createTeamButton">Crea Squadra</button>
-        </div>
-        <div id="playerList"></div>
-        <div id="playerForm">
-            <h3>Aggiungi Giocatore</h3>
-            <input type="text" id="playerName" placeholder="Nome">
-            <input type="text" id="playerSurname" placeholder="Cognome">
-            <input type="date" id="playerBirthdate" placeholder="Data di Nascita">
-            <input type="number" id="playerJerseyNumber" placeholder="Numero Maglia">
-            <input type="text" id="playerRole" placeholder="Ruolo">
-            <button id="addPlayerButton">Aggiungi Giocatore</button>
-        </div>
-        <button id="startMatchButton">Avvia Partita</button>
-        <div id="hockeyFieldContainer">
-            <div id="hockeyField"></div>
-        </div>
-        <div id="goalViewContainer">
-            <div id="goalView"></div>
-        </div>
-        <div id="stats"></div>
+    <div class="hockey-field">
+        <div class="line center-line"></div>
+        <div class="line goal-line top"></div>
+        <div class="line goal-line bottom"></div>
+        <div class="goal-crease top"></div>
+        <div class="goal-crease bottom"></div>
+        <div class="circle center"></div>
+        <div class="circle top-left"></div>
+        <div class="circle top-right"></div>
+        <div class="circle bottom-left"></div>
+        <div class="circle bottom-right"></div>
     </div>
-    <div id="shotPopup" class="popup">
-        <label for="playerSelect">Seleziona Giocatore:</label>
-        <select id="playerSelect"></select>
-        <label for="shotType">Tipo di Tiro:</label>
-        <select id="shotType">
-            <option value="G">Gol</option>
-            <option value="X">Tiro Fuori</option>
-            <option value="H">Colpito</option>
-        </select>
-        <button id="saveShotButton">Salva</button>
-    </div>
-    <script src="script.js"></script>
 </body>
 </html>
