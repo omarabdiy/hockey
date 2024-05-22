@@ -196,13 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             marker.addEventListener('click', () => {
                 clearGoalShotView();
-                if (shot.goalPosition) {
-                    const goalMarker = document.createElement('div');
-                    goalMarker.classList.add('marker');
-                    goalMarker.style.left = `${shot.goalPosition.x}px`;
-                    goalMarker.style.top = `${shot.goalPosition.y}px`;
-                    goalShotView.appendChild(goalMarker);
-                }
+                const goalMarker = document.createElement('div');
+                goalMarker.classList.add('marker');
+                goalMarker.style.left = `${shot.goalPosition.x}px`;
+                goalMarker.style.top = `${shot.goalPosition.y}px`;
+                goalShotView.appendChild(goalMarker);
             });
 
             hockeyField.appendChild(marker);
