@@ -20,12 +20,14 @@ body {
 
 .hockey-field {
     position: relative;
-    width: 800px; /* Larghezza del campo */
-    height: 400px; /* Lunghezza del campo */
+    width: 80%; /* Larghezza del campo in percentuale dello schermo */
+    max-width: 800px; /* Larghezza massima del campo */
+    height: auto; /* Altezza automatica per mantenere le proporzioni */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 20px auto; /* Centra il campo orizzontalmente */
 }
 
 .line {
