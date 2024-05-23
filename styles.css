@@ -6,25 +6,25 @@ body {
 }
 
 #app {
-    max-width: 800px;
+    max-width: 100%; /* Modificato per usare il 100% della larghezza disponibile */
     margin: auto;
     background-color: #fff;
-    padding: 20px;
+    padding: 2.5%; /* Modificato per essere una percentuale */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #hockeyFieldContainer {
-    margin-top: 20px;
+    margin-top: 2.5%; /* Modificato per essere una percentuale */
     position: relative;
 }
 
 .hockey-field {
     position: relative;
-    width: 800px; /* Larghezza del campo */
-    height: 400px; /* Lunghezza del campo */
+    width: 100%; /* Modificato per usare il 100% della larghezza disponibile */
+    height: 50%; /* Modificato per mantenere il rapporto 2:1 */
     background-color: #a2d5f2;
-    border: 5px solid #fff;
-    border-radius: 20px;
+    border: 0.625% solid #fff; /* Modificato per essere una percentuale */
+    border-radius: 2.5%; /* Modificato per essere una percentuale */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -37,12 +37,12 @@ body {
     left: 50%;
     top: 0;
     height: 100%;
-    width: 4px;
+    width: 0.5%; /* Modificato per essere una percentuale */
     transform: translateX(-50%);
 }
 
 .goal-line {
-    width: 2px;
+    width: 0.25%; /* Modificato per essere una percentuale */
     height: 100%;
 }
 
@@ -56,8 +56,8 @@ body {
 
 .goal-crease {
     position: absolute;
-    width: 30px;
-    height: 60px;
+    width: 3.75%; /* Modificato per essere una percentuale */
+    height: 15%; /* Modificato per essere una percentuale */
     background-color: rgba(255, 0, 0, 0.5);
     border-radius: 100% / 50%;
 }
@@ -76,9 +76,9 @@ body {
 
 .circle {
     position: absolute;
-    width: 100px;
-    height: 100px;
-    border: 2px solid #fff;
+    width: 12.5%; /* Modificato per essere una percentuale */
+    height: 12.5%; /* Modificato per essere una percentuale */
+    border: 0.25% solid #fff; /* Modificato per essere una percentuale */
     border-radius: 50%;
 }
 
@@ -114,23 +114,26 @@ body {
 
 .marker {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 1.25%; /* Modificato per essere una percentuale */
+    height: 1.25%; /* Modificato per essere una percentuale */
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
+
 .marker.green {
     background-color: green;
 }
+
 .marker.red {
     background-color: red;
 }
+
 .marker.blue {
     background-color: blue;
 }
 
 #playerForm {
-    margin-top: 20px;
+    margin-top: 2.5%; /* Modificato per essere una percentuale */
 }
 
 #playerForm input {
@@ -152,7 +155,7 @@ body {
     top: 50%;
     transform: translate(-50%, -50%);
     background: white;
-    padding: 20px;
+    padding: 2.5%; /* Modificato per essere una percentuale */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
