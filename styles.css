@@ -20,14 +20,12 @@ body {
 
 .hockey-field {
     position: relative;
-    width: 80vw; /* Larghezza del campo relativa alla larghezza dello schermo */
-    max-width: 800px; /* Larghezza massima del campo */
-    height: auto; /* Altezza automatica per mantenere le proporzioni */
+    width: 800px; /* Larghezza del campo */
+    height: 400px; /* Lunghezza del campo */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin: 0 auto; /* Centra il campo orizzontalmente */
 }
 
 .line {
@@ -58,8 +56,8 @@ body {
 
 .goal-crease {
     position: absolute;
-    width: 3vw; /* Larghezza della zona della porta relativa alla larghezza dello schermo */
-    height: 6vh; /* Altezza della zona della porta relativa all'altezza dello schermo */
+    width: 30px;
+    height: 60px;
     background-color: rgba(255, 0, 0, 0.5);
     border-radius: 100% / 50%;
 }
@@ -78,8 +76,8 @@ body {
 
 .circle {
     position: absolute;
-    width: 10vw; /* Diametro del cerchio relativo alla larghezza dello schermo */
-    height: 10vw; /* Diametro del cerchio relativo alla larghezza dello schermo */
+    width: 100px;
+    height: 100px;
     border: 2px solid #fff;
     border-radius: 50%;
 }
@@ -116,8 +114,53 @@ body {
 
 .marker {
     position: absolute;
-    width: 1vw; /* Dimensioni del segnaposto relativo alla larghezza dello schermo */
-    height: 1vw; /* Dimensioni del segnaposto relativo alla larghezza dello schermo */
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     transform: translate(-50%, -50%);
+}
+.marker.green {
+    background-color: green;
+}
+.marker.red {
+    background-color: red;
+}
+.marker.blue {
+    background-color: blue;
+}
+
+#playerForm {
+    margin-top: 20px;
+}
+
+#playerForm input {
+    display: block;
+    margin-bottom: 10px;
+    width: calc(100% - 22px);
+    padding: 10px;
+}
+
+#playerForm button {
+    padding: 10px;
+    width: 100%;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.popup label,
+.popup select,
+.popup button {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
 }
