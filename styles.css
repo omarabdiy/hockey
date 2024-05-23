@@ -20,8 +20,8 @@ body {
 
 .hockey-field {
     position: relative;
-    width: 800px; /* Larghezza del campo */
-    height: 400px; /* Lunghezza del campo */
+    width: 600px; /* Larghezza del campo */
+    height: 300px; /* Lunghezza del campo */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
