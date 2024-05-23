@@ -28,7 +28,9 @@ body {
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     margin: 20px auto; /* Centra il campo orizzontalmente */
+    aspect-ratio: 2 / 1; /* Ratio di aspetto 2:1 */
 }
+
 
 .line {
     position: absolute;
