@@ -66,8 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlayerSelectOptions();
     });
 
+    // Rimuove i tiri presenti quando si avvia una nuova partita
+    function clearField() {
+        const markers = document.querySelectorAll('.marker');
+        markers.forEach(marker => marker.remove());
+    }
+
     startMatchButton.addEventListener('click', () => {
         alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
+        // Pulisce il campo da eventuali tiri precedenti
+        clearField();
         hockeyField.addEventListener('click', onHockeyFieldClick);
     });
 
