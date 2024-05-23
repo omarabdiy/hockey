@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createTeamButton = document.getElementById('createTeamButton');
     const playerList = document.getElementById('playerList');
     const startMatchButton = document.getElementById('startMatchButton');
-    const hockeyField = document.getElementById('hockeyField');
+    const hockeyField = document.querySelector('.hockey-field');
     const stats = document.getElementById('stats');
     const playerForm = document.getElementById('playerForm');
     const playerName = document.getElementById('playerName');
@@ -61,31 +61,28 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         currentTeam.players.push(newPlayer);
         updatePlayerList();
+        updatePlayerSelectOptions();
     });
 
     startMatchButton.addEventListener('click', () => {
         alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
-        hockeyField.addEventListener('click', handleFieldClick);
+        hockeyField.addEventListener('click', onHockeyFieldClick);
     });
 
     saveShotButton.addEventListener('click', () => {
-        const selectedPlayerName = playerSelect.value;
+        const playerName = playerSelect.value;
         const shotType = shotTypeSelect.value;
+        const player = currentTeam.players.find(p => p.name === playerName);
 
-        const selectedPlayer = currentTeam.players.find(player => player.name === selectedPlayerName);
         if (shotType === 'G') {
             shots.goals++;
-            selectedPlayer.goals++;
+            player.goals++;
         } else if (shotType === 'X') {
             shots.misses++;
-            selectedPlayer.misses++;
+            player.misses++;
         } else if (shotType === 'H') {
             shots.hits++;
-            selectedPlayer.shots++;
         }
-
-        updatePlayerList();
-        updateStats(selectedPlayer, shotType);
 
         const marker = document.createElement('div');
         marker.classList.add('marker');
@@ -94,13 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.style.top = `${clickPosition.y}px`;
         hockeyField.appendChild(marker);
 
+        updateStats(player, shotType);
+        updatePlayerList();
         shotPopup.style.display = 'none';
     });
 
-    function handleFieldClick(event) {
-        const rect = hockeyField.getBoundingClientRect();
-        clickPosition = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-
+    function onHockeyFieldClick(event) {
+        clickPosition.x = event.clientX - hockeyField.getBoundingClientRect().left;
+        clickPosition.y = event.clientY - hockeyField.getBoundingClientRect().top;
         updatePlayerSelectOptions();
         shotPopup.style.display = 'block';
     }
