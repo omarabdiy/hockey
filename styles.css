@@ -31,27 +31,16 @@ body {
     aspect-ratio: 2 / 1; /* Ratio di aspetto 2:1 */
 }
 
-.line{
+.line, .goal-crease, .circle {
     width: calc(var(--size) * 0.02); /* Adatta la larghezza delle linee, delle porte e dei cerchi */
     height: calc(var(--size) * 0.02); /* Adatta l'altezza delle linee, delle porte e dei cerchi */
 }
 
-.goal-crease {
-    position: absolute;
-    width: calc(var(--size) * 0.04); /* Adatta la larghezza della porta */
-    height: calc(var(--size) * 0.2); /* Adatta l'altezza della porta */
-    background-color: rgba(255, 0, 0, 0.5);
-    border-radius: 100% / 50%;
-}
-
 .circle {
-    position: absolute;
-    width: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
-    border: calc(var(--size) * 0.01) solid #fff; /* Adatta lo spessore del bordo */
-    border-radius: 50%;
+    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
+    border-width: calc(var(--size) * 0.005); /* Adatta lo spessore del bordo */
 }
-
 
 .line {
     position: absolute;
@@ -81,8 +70,8 @@ body {
 
 .goal-crease {
     position: absolute;
-    width: 30px;
-    height: 60px;
+    width: calc(var(--size) * 0.04); /* Adatta la larghezza della porta */
+    height: calc(var(--size) * 0.2); /* Adatta l'altezza della porta */
     background-color: rgba(255, 0, 0, 0.5);
     border-radius: 100% / 50%;
 }
@@ -101,37 +90,45 @@ body {
 
 .circle {
     position: absolute;
-    width: 100px;
-    height: 100px;
     border: 2px solid #fff;
     border-radius: 50%;
 }
 
 .circle.center {
+    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
 }
 
 .circle.top-left {
+    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
     left: 25%;
     top: 20%;
     transform: translate(-50%, -50%);
 }
 
 .circle.top-right {
+    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
     right: 25%;
     top: 20%;
     transform: translate(50%, -50%);
 }
 
 .circle.bottom-left {
+    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
     left: 25%;
     bottom: 20%;
     transform: translate(-50%, 50%);
 }
 
 .circle.bottom-right {
+    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
     right: 25%;
     bottom: 20%;
     transform: translate(50%, 50%);
@@ -144,48 +141,15 @@ body {
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
+
 .marker.green {
     background-color: green;
 }
+
 .marker.red {
     background-color: red;
 }
+
 .marker.blue {
     background-color: blue;
-}
-
-#playerForm {
-    margin-top: 20px;
-}
-
-#playerForm input {
-    display: block;
-    margin-bottom: 10px;
-    width: calc(100% - 22px);
-    padding: 10px;
-}
-
-#playerForm button {
-    padding: 10px;
-    width: 100%;
-}
-
-.popup {
-    display: none;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.popup label,
-.popup select,
-.popup button {
-    display: block;
-    margin-bottom: 10px;
-    width: 100%;
 }
