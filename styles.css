@@ -56,8 +56,8 @@ body {
 
 .goal-crease {
     position: absolute;
-    width: 30px;
-    height: 60px;
+    width: 30%;
+    height: 60%;
     background-color: rgba(255, 0, 0, 0.5);
     border-radius: 100% / 50%;
 }
