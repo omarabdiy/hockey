@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateTeamSelectOptions();
     updatePlayerList();
+    updatePlayerSelectOptions();
 
     createTeamButton.addEventListener('click', () => {
         const teamName = prompt('Inserisci il nome della nuova squadra:');
@@ -46,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedTeamName = teamSelect.value;
         currentTeam = teams.find(team => team.name === selectedTeamName);
         updatePlayerList();
+        updatePlayerSelectOptions();
     });
 
     addPlayerButton.addEventListener('click', () => {
