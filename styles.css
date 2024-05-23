@@ -1,31 +1,31 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 20px;
-}
-
-#app {
-    max-width: 800px;
-    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
     background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0;
 }
 
-#hockeyFieldContainer {
-    margin-top: 20px;
-    position: relative;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .hockey-field {
     position: relative;
-    width: 600px; /* Larghezza del campo */
-    height: 300px; /* Lunghezza del campo */
+    width: 90%; /* Adattabile alla larghezza del contenitore */
+    max-width: 550px; /* Larghezza massima del campo */
+    height: calc(90% / 2); /* Altezza mantenendo le proporzioni */
+    max-height: 275px; /* Altezza massima del campo */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 20px auto; /* Centra il campo orizzontalmente */
 }
 
 .line {
@@ -34,133 +34,111 @@ body {
 }
 
 .center-line {
-    left: 50%;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    transform: translateX(-50%);
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2%;
+    transform: translateY(-50%);
 }
 
 .goal-line {
-    width: 2px;
-    height: 100%;
+    height: 1%;
+    width: 100%;
 }
 
-.goal-line.left {
-    left: 5%;
+.goal-line.top {
+    top: 5%;
 }
 
-.goal-line.right {
-    right: 5%;
+.goal-line.bottom {
+    bottom: 5%;
 }
 
 .goal-crease {
     position: absolute;
-    width: 30px;
-    height: 60px;
+    width: 10%;
+    height: 10%;
     background-color: rgba(255, 0, 0, 0.5);
-    border-radius: 100% / 50%;
+    border-radius: 50% / 100%;
 }
 
-.goal-crease.left {
-    left: 5%;
-    top: 50%;
-    transform: translateY(-50%);
+.goal-crease.top {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.goal-crease.right {
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
+.goal-crease.bottom {
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .circle {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 20%;
+    height: 20%;
     border: 2px solid #fff;
     border-radius: 50%;
 }
 
 .circle.center {
-    left: 50%;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }
 
 .circle.top-left {
-    left: 25%;
-    top: 20%;
+    top: 25%;
+    left: 20%;
     transform: translate(-50%, -50%);
 }
 
 .circle.top-right {
-    right: 25%;
-    top: 20%;
+    top: 25%;
+    right: 20%;
     transform: translate(50%, -50%);
 }
 
 .circle.bottom-left {
-    left: 25%;
-    bottom: 20%;
+    bottom: 25%;
+    left: 20%;
     transform: translate(-50%, 50%);
 }
 
 .circle.bottom-right {
-    right: 25%;
-    bottom: 20%;
+    bottom: 25%;
+    right: 20%;
     transform: translate(50%, 50%);
 }
 
 .marker {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 2%;
+    height: 2%;
     border-radius: 50%;
-    transform: translate(-50%, -50%);
 }
+
 .marker.green {
     background-color: green;
 }
+
 .marker.red {
     background-color: red;
 }
+
 .marker.blue {
     background-color: blue;
 }
 
-#playerForm {
-    margin-top: 20px;
-}
-
-#playerForm input {
-    display: block;
-    margin-bottom: 10px;
-    width: calc(100% - 22px);
-    padding: 10px;
-}
-
-#playerForm button {
-    padding: 10px;
-    width: 100%;
-}
-
-.popup {
+#shotPopup {
     display: none;
-    position: fixed;
-    left: 50%;
+    position: absolute;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.popup label,
-.popup select,
-.popup button {
-    display: block;
-    margin-bottom: 10px;
-    width: 100%;
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    z-index: 10;
 }
