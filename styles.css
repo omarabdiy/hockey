@@ -37,9 +37,8 @@ body {
 }
 
 .circle {
-    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    border-width: calc(var(--size) * 0.005); /* Adatta lo spessore del bordo */
+    width: calc(var(--size) * 0.125); /* Adatta la larghezza dei cerchi */
+    height: calc(var(--size) * 0.125); /* Adatta l'altezza dei cerchi */
 }
 
 .line {
@@ -76,62 +75,12 @@ body {
     border-radius: 100% / 50%;
 }
 
-.goal-crease.left {
-    left: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.goal-crease.right {
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
 .circle {
     position: absolute;
-    border: 2px solid #fff;
+    width: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
+    border: calc(var(--size) * 0.01) solid #fff; /* Adatta lo spessore del bordo */
     border-radius: 50%;
-}
-
-.circle.center {
-    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.circle.top-left {
-    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    left: 25%;
-    top: 20%;
-    transform: translate(-50%, -50%);
-}
-
-.circle.top-right {
-    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    right: 25%;
-    top: 20%;
-    transform: translate(50%, -50%);
-}
-
-.circle.bottom-left {
-    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    left: 25%;
-    bottom: 20%;
-    transform: translate(-50%, 50%);
-}
-
-.circle.bottom-right {
-    width: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta la dimensione dei cerchi */
-    right: 25%;
-    bottom: 20%;
-    transform: translate(50%, 50%);
 }
 
 .marker {
@@ -141,15 +90,12 @@ body {
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
-
 .marker.green {
     background-color: green;
 }
-
 .marker.red {
     background-color: red;
 }
-
 .marker.blue {
     background-color: blue;
 }
