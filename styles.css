@@ -16,38 +16,18 @@ body {
 #hockeyFieldContainer {
     margin-top: 20px;
     position: relative;
+    overflow: hidden; /* Nasconde eventuali overflow del campo */
 }
 
 .hockey-field {
     position: relative;
-    width: 80%; /* Larghezza del campo in percentuale dello schermo */
-    max-width: 800px; /* Larghezza massima del campo */
+    width: 100%; /* Larghezza del campo al 100% dello spazio disponibile */
     height: auto; /* Altezza automatica per mantenere le proporzioni */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin: 20px auto; /* Centra il campo orizzontalmente */
-    aspect-ratio: 2 / 1; /* Ratio di aspetto 2:1 */
-}
-
-.line, .goal-crease, .circle {
-    width: calc(var(--size) * 0.02); /* Adatta la larghezza delle linee, delle porte e dei cerchi */
-    height: calc(var(--size) * 0.02); /* Adatta l'altezza delle linee, delle porte e dei cerchi */
-}
-
-.circle {
-    position: absolute;
-    width: calc(var(--size) * 0.1); /* Adatta la larghezza dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta l'altezza dei cerchi */
-}
-
-.goal-crease {
-    position: absolute;
-    width: calc(var(--size) * 0.04); /* Adatta la larghezza delle porte */
-    height: calc(var(--size) * 0.08); /* Adatta l'altezza delle porte */
-    background-color: rgba(255, 0, 0, 0.5);
-    border-radius: 100% / 50%;
+    margin: 0 auto; /* Centra il campo orizzontalmente */
 }
 
 .line {
@@ -76,6 +56,14 @@ body {
     right: 5%;
 }
 
+.goal-crease {
+    position: absolute;
+    width: 30px;
+    height: 60px;
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 100% / 50%;
+}
+
 .goal-crease.left {
     left: 5%;
     top: 50%;
@@ -86,6 +74,14 @@ body {
     right: 5%;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.circle {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #fff;
+    border-radius: 50%;
 }
 
 .circle.center {
@@ -125,32 +121,7 @@ body {
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
-.marker.green {
-    background-color: green;
-}
-.marker.red {
-    background-color: red;
-}
-.marker.blue {
-    background-color: blue;
-}
-
-#playerForm {
-    margin-top: 20px;
-}
-
-#playerForm input {
-    display: block;
-    margin-bottom: 10px;
-    width: calc(100% - 22px);
-    padding: 10px;
-}
-
-#playerForm button {
-    padding: 10px;
-    width: 100%;
-}
-
+/* Stili per il popup */
 .popup {
     display: none;
     position: fixed;
