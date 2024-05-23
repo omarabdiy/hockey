@@ -31,15 +31,27 @@ body {
     aspect-ratio: 2 / 1; /* Ratio di aspetto 2:1 */
 }
 
-.line, .goal-crease, .circle {
+.line{
     width: calc(var(--size) * 0.02); /* Adatta la larghezza delle linee, delle porte e dei cerchi */
     height: calc(var(--size) * 0.02); /* Adatta l'altezza delle linee, delle porte e dei cerchi */
 }
 
-.circle {
-    width: calc(var(--size) * 0.1); /* Adatta la larghezza dei cerchi */
-    height: calc(var(--size) * 0.1); /* Adatta l'altezza dei cerchi */
+.goal-crease {
+    position: absolute;
+    width: calc(var(--size) * 0.04); /* Adatta la larghezza della porta */
+    height: calc(var(--size) * 0.2); /* Adatta l'altezza della porta */
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 100% / 50%;
 }
+
+.circle {
+    position: absolute;
+    width: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
+    height: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
+    border: calc(var(--size) * 0.01) solid #fff; /* Adatta lo spessore del bordo */
+    border-radius: 50%;
+}
+
 
 .line {
     position: absolute;
