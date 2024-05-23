@@ -31,6 +31,15 @@ body {
     aspect-ratio: 2 / 1; /* Ratio di aspetto 2:1 */
 }
 
+.line, .goal-crease, .circle {
+    width: calc(var(--size) * 0.02); /* Adatta la larghezza delle linee, delle porte e dei cerchi */
+    height: calc(var(--size) * 0.02); /* Adatta l'altezza delle linee, delle porte e dei cerchi */
+}
+
+.circle {
+    width: calc(var(--size) * 0.1); /* Adatta la larghezza dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta l'altezza dei cerchi */
+}
 
 .line {
     position: absolute;
