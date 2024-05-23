@@ -37,8 +37,17 @@ body {
 }
 
 .circle {
-    width: calc(var(--size) * 0.125); /* Adatta la larghezza dei cerchi */
-    height: calc(var(--size) * 0.125); /* Adatta l'altezza dei cerchi */
+    position: absolute;
+    width: calc(var(--size) * 0.1); /* Adatta la larghezza dei cerchi */
+    height: calc(var(--size) * 0.1); /* Adatta l'altezza dei cerchi */
+}
+
+.goal-crease {
+    position: absolute;
+    width: calc(var(--size) * 0.04); /* Adatta la larghezza delle porte */
+    height: calc(var(--size) * 0.08); /* Adatta l'altezza delle porte */
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 100% / 50%;
 }
 
 .line {
@@ -67,20 +76,46 @@ body {
     right: 5%;
 }
 
-.goal-crease {
-    position: absolute;
-    width: calc(var(--size) * 0.04); /* Adatta la larghezza della porta */
-    height: calc(var(--size) * 0.2); /* Adatta l'altezza della porta */
-    background-color: rgba(255, 0, 0, 0.5);
-    border-radius: 100% / 50%;
+.goal-crease.left {
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.circle {
-    position: absolute;
-    width: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
-    height: calc(var(--size) * 0.125); /* Adatta la dimensione dei cerchi */
-    border: calc(var(--size) * 0.01) solid #fff; /* Adatta lo spessore del bordo */
-    border-radius: 50%;
+.goal-crease.right {
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.circle.center {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.circle.top-left {
+    left: 25%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+}
+
+.circle.top-right {
+    right: 25%;
+    top: 20%;
+    transform: translate(50%, -50%);
+}
+
+.circle.bottom-left {
+    left: 25%;
+    bottom: 20%;
+    transform: translate(-50%, 50%);
+}
+
+.circle.bottom-right {
+    right: 25%;
+    bottom: 20%;
+    transform: translate(50%, 50%);
 }
 
 .marker {
@@ -98,4 +133,40 @@ body {
 }
 .marker.blue {
     background-color: blue;
+}
+
+#playerForm {
+    margin-top: 20px;
+}
+
+#playerForm input {
+    display: block;
+    margin-bottom: 10px;
+    width: calc(100% - 22px);
+    padding: 10px;
+}
+
+#playerForm button {
+    padding: 10px;
+    width: 100%;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.popup label,
+.popup select,
+.popup button {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
 }
