@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const teams = JSON.parse(localStorage.getItem('teams')) || [
+    let teams = JSON.parse(localStorage.getItem('teams')) || [
         {
             name: 'Squadra Default',
             players: [
@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             option.textContent = team.name;
             teamSelect.appendChild(option);
         });
+        teamSelect.value = currentTeam.name;
     }
 
     function updatePlayerList() {
