@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Squadra Default",
+        "players": [
+            {
+                "name": "Mario",
+                "surname": "Rossi",
+                "birthdate": "1990-01-01",
+                "jerseyNumber": 10,
+                "role": "Attaccante",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            }
+        ]
+    }
+]
