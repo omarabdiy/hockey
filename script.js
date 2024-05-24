@@ -85,40 +85,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     saveShotButton.addEventListener('click', () => {
-        const playerName = playerSelect.value;
-        const shotType = shotTypeSelect.value;
-        const player = currentTeam.players.find(p => p.name === playerName);
+    const playerName = playerSelect.value;
+    const shotType = shotTypeSelect.value;
+    const player = currentTeam.players.find(p => p.name === playerName);
 
-        if (shotType === 'G') {
-            shots.goals++;
-            player.goals++;
-        } else if (shotType === 'X') {
-            shots.misses++;
-            player.misses++;
-        } else if (shotType === 'H') {
-            shots.hits++;
-        }
+    if (shotType === 'G') {
+        shots.goals++;
+        player.goals++;
+    } else if (shotType === 'X') {
+        shots.misses++;
+        player.misses++;
+    } else if (shotType === 'H') {
+        shots.hits++;
+    }
 
-        const marker = document.createElement('div');
-        marker.classList.add('marker');
-        marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
-        marker.style.left = `${clickPosition.x}px`;
-        marker.style.top = `${clickPosition.y}px`;
-        hockeyField.appendChild(marker);
+    const marker = document.createElement('div');
+    marker.classList.add('marker');
+    marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
+    marker.style.left = `${clickPosition.x}px`;
+    marker.style.top = `${clickPosition.y}px`;
+    hockeyField.appendChild(marker);
 
-        const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        arrow.setAttribute('class', 'arrow');
-        arrow.setAttribute('x1', arrowStart.x);
-        arrow.setAttribute('y1', arrowStart.y);
-        arrow.setAttribute('x2', clickPosition.x);
-        arrow.setAttribute('y2', clickPosition.y);
-        arrowsContainer.appendChild(arrow);
+    const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    arrow.setAttribute('class', 'arrow');
+    arrow.setAttribute('x1', arrowStart.x);
+    arrow.setAttribute('y1', arrowStart.y);
+    arrow.setAttribute('x2', clickPosition.x);
+    arrow.setAttribute('y2', clickPosition.y);
 
-        updateStats(player, shotType);
-        updatePlayerList();
-        shotPopup.style.display = 'none';
-        isDrawing = false;
-    });
+    const startDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    startDot.setAttribute('class', 'start-dot');
+    startDot.setAttribute('cx', arrowStart.x);
+    startDot.setAttribute('cy', arrowStart.y);
+    startDot.setAttribute('r', '2'); // Dimensione del pallino all'inizio della freccia
+
+    arrowsContainer.appendChild(arrow);
+    arrowsContainer.appendChild(startDot);
+
+    updateStats(player, shotType);
+    updatePlayerList();
+    shotPopup.style.display = 'none';
+    isDrawing = false;
+});
+
 
     showArrowsCheckbox.addEventListener('change', () => {
         const arrows = document.querySelectorAll('.arrow');
