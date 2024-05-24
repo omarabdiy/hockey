@@ -3,16 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             name: 'Squadra Default',
             players: [
-                { name: 'omar', surname: 'abdelmotti', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'gabriele', surname: 'giannatempo', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'gabriele', surname: 'sala', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'alessia', surname: 'bergamini', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'amza', surname: 'idrizoski', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'giorgia', surname: 'zanella', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'giulia', surname: 'cipriano', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'romeo', surname: 'ganzerli', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'riccardo', surname: 'corazzari', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 };
-                { name: 'tommaso', surname: 'orrù', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 }
+                { name: 'omar', surname: 'abdelmotti', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 }
             ]
         }
     ];
