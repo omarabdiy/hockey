@@ -26,15 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
     const saveShotButton = document.getElementById('saveShotButton');
-    const arrowsContainer = document.getElementById('arrowsContainer');
-    const showArrowsCheckbox = document.getElementById('showArrowsCheckbox');
 
     let currentTeam = teams[0];
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
-    let finalPosition = { x: 0, y: 0 };
-    let isDrawing = false;
-    let arrowStart = null;
 
     updateTeamSelectOptions();
     updatePlayerList();
@@ -71,18 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlayerSelectOptions();
     });
 
+    // Rimuove i tiri presenti quando si avvia una nuova partita
     function clearField() {
         const markers = document.querySelectorAll('.marker');
         markers.forEach(marker => marker.remove());
-        arrowsContainer.innerHTML = '';
     }
 
     startMatchButton.addEventListener('click', () => {
         alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
+        // Pulisce il campo da eventuali tiri precedenti
         clearField();
-        hockeyField.addEventListener('mousedown', onHockeyFieldMouseDown);
-        hockeyField.addEventListener('mousemove', onHockeyFieldMouseMove);
-        hockeyField.addEventListener('mouseup', onHockeyFieldMouseUp);
+        hockeyField.addEventListener('click', onHockeyFieldClick);
     });
 
     saveShotButton.addEventListener('click', () => {
@@ -107,61 +101,16 @@ document.addEventListener('DOMContentLoaded', () => {
         marker.style.top = `${clickPosition.y}px`;
         hockeyField.appendChild(marker);
 
-        const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        arrow.setAttribute('class', 'arrow');
-        arrow.setAttribute('x1', arrowStart.x);
-        arrow.setAttribute('y1', arrowStart.y);
-        arrow.setAttribute('x2', finalPosition.x);
-        arrow.setAttribute('y2', finalPosition.y);
-
-        const startDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        startDot.setAttribute('class', 'start-dot');
-        startDot.setAttribute('cx', arrowStart.x);
-        startDot.setAttribute('cy', arrowStart.y);
-        startDot.setAttribute('r', '2');
-
-        arrowsContainer.appendChild(arrow);
-        arrowsContainer.appendChild(startDot);
-
         updateStats(player, shotType);
         updatePlayerList();
         shotPopup.style.display = 'none';
-        isDrawing = false;
     });
 
-    showArrowsCheckbox.addEventListener('change', () => {
-        const arrows = document.querySelectorAll('.arrow');
-        arrows.forEach(arrow => {
-            arrow.classList.toggle('hidden', !showArrowsCheckbox.checked);
-        });
-    });
-
-    function onHockeyFieldMouseDown(event) {
-        isDrawing = true;
-        arrowStart = {
-            x: event.clientX - hockeyField.getBoundingClientRect().left,
-            y: event.clientY - hockeyField.getBoundingClientRect().top
-        };
-    }
-
-    function onHockeyFieldMouseMove(event) {
-        if (isDrawing) {
-            finalPosition = {
-                x: event.clientX - hockeyField.getBoundingClientRect().left,
-                y: event.clientY - hockeyField.getBoundingClientRect().top
-            };
-        }
-    }
-
-    function onHockeyFieldMouseUp(event) {
-        if (isDrawing) {
-            finalPosition = {
-                x: event.clientX - hockeyField.getBoundingClientRect().left,
-                y: event.clientY - hockeyField.getBoundingClientRect().top
-            };
-            updatePlayerSelectOptions();
-            shotPopup.style.display = 'block';
-        }
+    function onHockeyFieldClick(event) {
+        clickPosition.x = event.clientX - hockeyField.getBoundingClientRect().left;
+        clickPosition.y = event.clientY - hockeyField.getBoundingClientRect().top;
+        updatePlayerSelectOptions();
+        shotPopup.style.display = 'block';
     }
 
     function updateTeamSelectOptions() {
