@@ -164,17 +164,3 @@ body {
     margin-bottom: 10px;
     width: 100%;
 }
-
-.arrow {
-    stroke: black;
-    stroke-width: 1; /* Riduci lo spessore della freccia */
-    fill: none;
-}
-
-.hidden {
-    display: none;
-}
-
-.start-dot {
-    fill: black;
-}
