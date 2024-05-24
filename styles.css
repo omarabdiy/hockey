@@ -164,3 +164,20 @@ body {
     margin-bottom: 10px;
     width: 100%;
 }
+
+.arrows-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.arrow {
+    stroke: black;
+    stroke-width: 2;
+    fill: none;
+}
+
+.hidden {
+    display: none;
+}
