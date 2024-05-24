@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const teams = [
+    const teams = JSON.parse(localStorage.getItem('teams')) || [
         {
             name: 'Squadra Default',
             players: [
-                { name: 'omar', surname: 'abdelmotti', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 }
+                { name: 'Mario', surname: 'Rossi', birthdate: '1990-01-01', jerseyNumber: 10, role: 'Attaccante', shots: 0, goals: 0, misses: 0 }
             ]
         }
     ];
@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const teamName = prompt('Inserisci il nome della nuova squadra:');
         if (teamName) {
             teams.push({ name: teamName, players: [] });
+            saveTeams();
             updateTeamSelectOptions();
         }
     });
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             misses: 0
         };
         currentTeam.players.push(newPlayer);
+        saveTeams();
         updatePlayerList();
         updatePlayerSelectOptions();
     });
@@ -102,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         hockeyField.appendChild(marker);
 
         updateStats(player, shotType);
+        saveTeams();
         updatePlayerList();
         shotPopup.style.display = 'none';
     });
@@ -152,5 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
             Tiri fuori: ${shots.misses}<br>
             Colpiti: ${shots.hits}
         `;
+    }
+
+    function saveTeams() {
+        localStorage.setItem('teams', JSON.stringify(teams));
     }
 });
