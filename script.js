@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTeam = teams[0];
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
+    let finalPosition = { x: 0, y: 0 };
     let isDrawing = false;
     let arrowStart = null;
 
@@ -85,49 +86,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     saveShotButton.addEventListener('click', () => {
-    const playerName = playerSelect.value;
-    const shotType = shotTypeSelect.value;
-    const player = currentTeam.players.find(p => p.name === playerName);
+        const playerName = playerSelect.value;
+        const shotType = shotTypeSelect.value;
+        const player = currentTeam.players.find(p => p.name === playerName);
 
-    if (shotType === 'G') {
-        shots.goals++;
-        player.goals++;
-    } else if (shotType === 'X') {
-        shots.misses++;
-        player.misses++;
-    } else if (shotType === 'H') {
-        shots.hits++;
-    }
+        if (shotType === 'G') {
+            shots.goals++;
+            player.goals++;
+        } else if (shotType === 'X') {
+            shots.misses++;
+            player.misses++;
+        } else if (shotType === 'H') {
+            shots.hits++;
+        }
 
-    const marker = document.createElement('div');
-    marker.classList.add('marker');
-    marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
-    marker.style.left = `${clickPosition.x}px`;
-    marker.style.top = `${clickPosition.y}px`;
-    hockeyField.appendChild(marker);
+        const marker = document.createElement('div');
+        marker.classList.add('marker');
+        marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
+        marker.style.left = `${clickPosition.x}px`;
+        marker.style.top = `${clickPosition.y}px`;
+        hockeyField.appendChild(marker);
 
-    const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    arrow.setAttribute('class', 'arrow');
-    arrow.setAttribute('x1', arrowStart.x);
-    arrow.setAttribute('y1', arrowStart.y);
-    arrow.setAttribute('x2', clickPosition.x);
-    arrow.setAttribute('y2', clickPosition.y);
+        const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        arrow.setAttribute('class', 'arrow');
+        arrow.setAttribute('x1', arrowStart.x);
+        arrow.setAttribute('y1', arrowStart.y);
+        arrow.setAttribute('x2', finalPosition.x);
+        arrow.setAttribute('y2', finalPosition.y);
 
-    const startDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    startDot.setAttribute('class', 'start-dot');
-    startDot.setAttribute('cx', arrowStart.x);
-    startDot.setAttribute('cy', arrowStart.y);
-    startDot.setAttribute('r', '2'); // Dimensione del pallino all'inizio della freccia
+        const startDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        startDot.setAttribute('class', 'start-dot');
+        startDot.setAttribute('cx', arrowStart.x);
+        startDot.setAttribute('cy', arrowStart.y);
+        startDot.setAttribute('r', '2');
 
-    arrowsContainer.appendChild(arrow);
-    arrowsContainer.appendChild(startDot);
+        arrowsContainer.appendChild(arrow);
+        arrowsContainer.appendChild(startDot);
 
-    updateStats(player, shotType);
-    updatePlayerList();
-    shotPopup.style.display = 'none';
-    isDrawing = false;
-});
-
+        updateStats(player, shotType);
+        updatePlayerList();
+        shotPopup.style.display = 'none';
+        isDrawing = false;
+    });
 
     showArrowsCheckbox.addEventListener('change', () => {
         const arrows = document.querySelectorAll('.arrow');
@@ -146,15 +146,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function onHockeyFieldMouseMove(event) {
         if (isDrawing) {
-            clickPosition.x = event.clientX - hockeyField.getBoundingClientRect().left;
-            clickPosition.y = event.clientY - hockeyField.getBoundingClientRect().top;
+            finalPosition = {
+                x: event.clientX - hockeyField.getBoundingClientRect().left,
+                y: event.clientY - hockeyField.getBoundingClientRect().top
+            };
         }
     }
 
     function onHockeyFieldMouseUp(event) {
         if (isDrawing) {
-            clickPosition.x = event.clientX - hockeyField.getBoundingClientRect().left;
-            clickPosition.y = event.clientY - hockeyField.getBoundingClientRect().top;
+            finalPosition = {
+                x: event.clientX - hockeyField.getBoundingClientRect().left,
+                y: event.clientY - hockeyField.getBoundingClientRect().top
+            };
             updatePlayerSelectOptions();
             shotPopup.style.display = 'block';
         }
