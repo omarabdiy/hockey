@@ -14,16 +14,14 @@ body {
 }
 
 #hockeyFieldContainer {
-    width: 80%; /* Larghezza del campo */
-    height: 60%; /* Lunghezza del campo */
     margin-top: 20px;
     position: relative;
 }
 
 .hockey-field {
     position: relative;
-    width: 80%; /* Larghezza del campo */
-    height: 60%; /* Lunghezza del campo */
+    width: 550%; /* Larghezza del campo */
+    height: 275%; /* Lunghezza del campo */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
