@@ -14,6 +14,8 @@ body {
 }
 
 #hockeyFieldContainer {
+    width: 80%; /* Larghezza del campo */
+    height: 60%; /* Lunghezza del campo */
     margin-top: 20px;
     position: relative;
 }
