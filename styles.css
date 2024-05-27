@@ -7,6 +7,7 @@ body {
 
 #app {
     max-width: 800px;
+    max-height 3000px
     margin: auto;
     background-color: #fff;
     padding: 20px;
