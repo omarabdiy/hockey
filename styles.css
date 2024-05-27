@@ -7,7 +7,6 @@ body {
 
 #app {
     max-width: 800px;
-    max-height 3000px
     margin: auto;
     background-color: #fff;
     padding: 20px;
@@ -21,8 +20,8 @@ body {
 
 .hockey-field {
     position: relative;
-    width: 550%; /* Larghezza del campo */
-    height: 275%; /* Lunghezza del campo */
+    width: 550px; /* Larghezza del campo */
+    height: 275px; /* Lunghezza del campo */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
