@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const githubUsername = 'omarabdiy';
     const repoName = 'hockey';
-    const token = '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'; // Inserisci qui il tuo token
+    const token = 'YOUR_PERSONAL_ACCESS_TOKEN'; // Inserisci qui il tuo token
 
     // Carica i dati dal file JSON
     fetch(`https://raw.githubusercontent.com/${githubUsername}/${repoName}/main/data.json`)
@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 goals: 0,
                 misses: 0
             };
+            console.log('Adding new player:', newPlayer);
             currentTeam.players.push(newPlayer);
             saveTeams();
             updatePlayerList();
@@ -173,43 +174,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function saveTeams() {
-            const filePath = 'data.json';
-
-            // Prima, ottieni l'SHA del file corrente
-            fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`, {
+            fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/data.json`, {
+                method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Update teams data',
+                    content: btoa(JSON.stringify(teams)),
+                    sha: 'SHA_OF_EXISTING_FILE'
+                })
             })
                 .then(response => response.json())
                 .then(data => {
-                    const sha = data.sha;
-                    const content = btoa(JSON.stringify(teams));
-                    const message = 'Update teams data';
-
-                    // Poi, salva il nuovo contenuto
-                    fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            content: content,
-                            sha: sha
-                        })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Teams saved to GitHub:', data);
-                        })
-                        .catch(error => {
-                            console.error('Error saving teams:', error);
-                        });
+                    console.log('Teams saved to GitHub:', data);
                 })
                 .catch(error => {
-                    console.error('Error retrieving file SHA:', error);
+                    console.error('Error saving teams:', error);
                 });
         }
     }
