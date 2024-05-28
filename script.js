@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const githubUsername = 'omarabdiy';
     const repoName = 'hockey';
-    const token = 'YOUR_PERSONAL_ACCESS_TOKEN'; // Inserisci qui il tuo token
+    const token = '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'; // Inserisci qui il tuo token
 
     // Carica i dati dal file JSON
     fetch(`https://raw.githubusercontent.com/${githubUsername}/${repoName}/main/data.json`)
