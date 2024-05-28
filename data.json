@@ -1,1 +1,97 @@
-[]
+[
+    {
+        "name": "Squadra Prova",
+        "players": [
+            {
+                "name": "Giocatore1",
+                "surname": "Rossi",
+                "birthdate": "2000-01-01",
+                "jerseyNumber": 1,
+                "role": "Portiere",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore2",
+                "surname": "Bianchi",
+                "birthdate": "1999-02-02",
+                "jerseyNumber": 2,
+                "role": "Difensore",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore3",
+                "surname": "Verdi",
+                "birthdate": "1998-03-03",
+                "jerseyNumber": 3,
+                "role": "Difensore",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore4",
+                "surname": "Neri",
+                "birthdate": "1997-04-04",
+                "jerseyNumber": 4,
+                "role": "Centrocampista",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore5",
+                "surname": "Blu",
+                "birthdate": "1996-05-05",
+                "jerseyNumber": 5,
+                "role": "Centrocampista",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore6",
+                "surname": "Gialli",
+                "birthdate": "1995-06-06",
+                "jerseyNumber": 6,
+                "role": "Centrocampista",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore7",
+                "surname": "Azzurri",
+                "birthdate": "1994-07-07",
+                "jerseyNumber": 7,
+                "role": "Attaccante",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore8",
+                "surname": "Viola",
+                "birthdate": "1993-08-08",
+                "jerseyNumber": 8,
+                "role": "Attaccante",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore9",
+                "surname": "Marrone",
+                "birthdate": "1992-09-09",
+                "jerseyNumber": 9,
+                "role": "Attaccante",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            }
+        ]
+    }
+]
