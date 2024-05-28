@@ -162,27 +162,47 @@ document.addEventListener('DOMContentLoaded', () => {
             const markers = document.querySelectorAll('.marker');
             markers.forEach(marker => marker.remove());
         }
+    }
 
-        function saveTeams() {
-            fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/data.json', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Bearer YOUR_PERSONAL_ACCESS_TOKEN',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Update teams data',
-                    content: btoa(JSON.stringify(teams)),
-                    sha: 'SHA_OF_EXISTING_FILE'
+    // Function to fetch the SHA of the existing file on GitHub
+    function getShaOfFile() {
+        return fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/data.json', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer YOUR_PERSONAL_ACCESS_TOKEN'
+            }
+        })
+        .then(response => response.json())
+        .then(data => data.sha)
+        .catch(error => {
+            console.error('Error fetching SHA:', error);
+        });
+    }
+
+    // Function to save teams to GitHub
+    function saveTeams() {
+        getShaOfFile().then(sha => {
+            if (sha) {
+                fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/data.json', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer YOUR_PERSONAL_ACCESS_TOKEN',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Update teams data',
+                        content: btoa(JSON.stringify(teams)),
+                        sha: sha
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Teams saved to GitHub:', data);
-            })
-            .catch(error => {
-                console.error('Error saving teams:', error);
-            });
-        }
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Teams saved to GitHub:', data);
+                })
+                .catch(error => {
+                    console.error('Error saving teams:', error);
+                });
+            }
+        });
     }
 });
