@@ -120,12 +120,15 @@ body {
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
+
 .marker.green {
     background-color: green;
 }
+
 .marker.red {
     background-color: red;
 }
+
 .marker.blue {
     background-color: blue;
 }
