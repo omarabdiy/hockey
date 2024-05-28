@@ -22,12 +22,13 @@ body {
 .hockey-field {
     position: relative;
     width: 100%; /* Larghezza del campo */
-    height: 100%; /* Lunghezza del campo */
+    height: calc(50vw - 10px); /* 50% della larghezza meno i margini */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
 
 .line {
     position: absolute;
