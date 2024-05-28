@@ -3,11 +3,11 @@
         "name": "Squadra Prova",
         "players": [
             {
-                "name": "Giocatore1",
-                "surname": "Rossi",
-                "birthdate": "2000-01-01",
-                "jerseyNumber": 1,
-                "role": "Portiere",
+                "name": "Omar",
+                "surname": "Abdelmotti",
+                "birthdate": "2005-09-28",
+                "jerseyNumber": 10,
+                "role": "Difensore",
                 "shots": 0,
                 "goals": 0,
                 "misses": 0
