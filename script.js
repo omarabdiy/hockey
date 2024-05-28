@@ -166,10 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to fetch the SHA of the existing file on GitHub
     function getShaOfFile() {
-        return fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/data.json', {
+        return fetch('https://api.github.com/repos/omarabdiy/hockey/contents/data.json', {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer YOUR_PERSONAL_ACCESS_TOKEN'
+                'Authorization': 'Bearer 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'
             }
         })
         .then(response => response.json())
@@ -183,10 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveTeams() {
         getShaOfFile().then(sha => {
             if (sha) {
-                fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/data.json', {
+                fetch('https://api.github.com/repos/omarabdiy/hockey/contents/data.json', {
                     method: 'PUT',
                     headers: {
-                        'Authorization': 'Bearer YOUR_PERSONAL_ACCESS_TOKEN',
+                        'Authorization': 'Bearer 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',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
