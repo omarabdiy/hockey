@@ -15,6 +15,7 @@ body {
 
 #hockeyFieldContainer {
     margin-top: 20px;
+    height: 45%;
     position: relative;
 }
 
@@ -28,7 +29,6 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-
 .line {
     position: absolute;
     background-color: #fff;
@@ -38,12 +38,12 @@ body {
     left: 50%;
     top: 0;
     height: 100%;
-    width: 4px;
+    width: 0.5%; /* Proportional width */
     transform: translateX(-50%);
 }
 
 .goal-line {
-    width: 2px;
+    width: 0.25%; /* Proportional width */
     height: 100%;
 }
 
@@ -57,8 +57,8 @@ body {
 
 .goal-crease {
     position: absolute;
-    width: 30px;
-    height: 60px;
+    width: 3.75%; /* 30px / 800px * 100% */
+    height: 15%; /* 60px / 400px * 100% */
     background-color: rgba(255, 0, 0, 0.5);
     border-radius: 100% / 50%;
 }
@@ -77,9 +77,9 @@ body {
 
 .circle {
     position: absolute;
-    width: 100px;
-    height: 100px;
-    border: 2px solid #fff;
+    width: 12.5%; /* 100px / 800px * 100% */
+    height: 25%; /* 100px / 400px * 100% */
+    border: 0.25% solid #fff; /* 2px / 800px * 100% */
     border-radius: 50%;
 }
 
@@ -115,8 +115,8 @@ body {
 
 .marker {
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 1.25%; /* 10px / 800px * 100% */
+    height: 2.5%; /* 10px / 400px * 100% */
     border-radius: 50%;
     transform: translate(-50%, -50%);
 }
