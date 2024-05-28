@@ -6,7 +6,7 @@ body {
 }
 
 #app {
-    max-width: 100%;
+    max-width: 800px;
     margin: auto;
     background-color: #fff;
     padding: 20px;
@@ -14,15 +14,14 @@ body {
 }
 
 #hockeyFieldContainer {
-    max-height 45%;
     margin-top: 20px;
     position: relative;
 }
 
 .hockey-field {
     position: relative;
-    width: 90%; /* Larghezza del campo */
-    height: 43%; /* Lunghezza del campo */
+    width: 100%; /* Larghezza del campo */
+    height: 275px; /* Lunghezza del campo */
     background-color: #a2d5f2;
     border: 5px solid #fff;
     border-radius: 20px;
