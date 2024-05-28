@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function saveTeams() {
             const filePath = 'data.json';
             const content = btoa(JSON.stringify(teams, null, 2));
-            const token = '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';
+            const token = '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';
 
             fetch(`https://api.github.com/repos/omarabdiy/hockey/contents/${filePath}`, {
                 method:
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     message: 'Update teams data',
                     content: content,
-                    sha: 'SHA_OF_EXISTING_FILE'
+                    sha: 'd13626261947b71e02b645640150f5d2a7ccbb0c'
                 })
             })
             .then(response => response.json())
