@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function saveTeams() {
-            fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/data.json`, {
+            fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/main/data.json`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
