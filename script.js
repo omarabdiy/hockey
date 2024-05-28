@@ -2,16 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let teams = [];
 
     // Carica i dati dal file JSON
-    fetch('https://raw.githubusercontent.com/omarabdiy/hockey/main/data.json')
-        .then(response => response.json())
-        .then(data => {
-            teams = data;
-            console.log('Teams loaded from JSON file:', teams);
-            initializeApp();
-        })
-        .catch(error => {
-            console.error('Error loading teams:', error);
-        });
+    fetch('https://api.github.com/repos/omarabdiy/hockey/contents/data.json', {
+        headers: {
+            'Authorization': 'token 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'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        teams = JSON.parse(atob(data.content));
+        console.log('Teams loaded from JSON file:', teams);
+        initializeApp();
+    })
+    .catch(error => {
+        console.error('Error loading teams:', error);
+    });
 
     const teamSelect = document.getElementById('teamSelect');
     const createTeamButton = document.getElementById('createTeamButton');
@@ -165,28 +169,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function saveTeams() {
             const filePath = 'data.json';
-            const content = JSON.stringify(teams, null, 2);
+            const content = btoa(JSON.stringify(teams, null, 2));
+            const token = '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';
 
             fetch(`https://api.github.com/repos/omarabdiy/hockey/contents/${filePath}`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': 'token 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',
+                    'Authorization': `token ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     message: 'Update teams data',
-                    content: btoa(content),
-                    sha: 'SHA_OF_EXISTING_FILE'   
+                    content: content,
+                    sha: 'SHA_OF_EXISTING_FILE'
+                })
             })
             .then(response => {
                 if (response.ok) {
+                    console.log('Teams saved to GitHub.');
                     return response.json();
                 } else {
                     throw new Error('Failed to save teams: ' + response.statusText);
                 }
             })
             .then(data => {
-                console.log('Teams saved to GitHub:', data);
+                console.log('Response:', data);
             })
             .catch(error => {
                 console.error('Error saving teams:', error);
