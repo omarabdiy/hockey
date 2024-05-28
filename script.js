@@ -166,12 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
         function saveTeams() {
             const filePath = 'data.json';
             const content = btoa(JSON.stringify(teams, null, 2));
-            const token = 'YOUR_PERSONAL_ACCESS_TOKEN';
+            const token = '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';
 
             fetch(`https://api.github.com/repos/omarabdiy/hockey/contents/${filePath}`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${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}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
