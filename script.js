@@ -151,11 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
             stats.innerHTML = `
                 Giocatore: ${player.name}<br>
                 Tipo di tiro: ${shotType}<br><br>
-                Statistiche:<br>
+                Statistic
+            che:<br>
                 Gol: ${shots.goals}<br>
                 Tiri fuori: ${shots.misses}<br>
-                Colpiti: ${shots.hits}
-            `;
+                Colpiti: ${shots.hits};
         }
 
         function clearField() {
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function saveTeams() {
             const filePath = 'data.json';
             const content = btoa(JSON.stringify(teams, null, 2));
-            const token = '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';
+            const token = 'YOUR_PERSONAL_ACCESS_TOKEN';
 
             fetch(`https://api.github.com/repos/omarabdiy/hockey/contents/${filePath}`, {
                 method: 'PUT',
