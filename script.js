@@ -1,5 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     let teams = [];
+
+    // Carica i dati dal file JSON
+    fetch('https://api.github.com/repos/omarabdiy/hockey/contents/data.json', {
+        headers: {
+            'Authorization': 'token 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'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        teams = JSON.parse(atob(data.content));
+        console.log('Teams loaded from JSON file:', teams);
+        initializeApp();
+    })
+    .catch(error => {
+        console.error('Error loading teams:', error);
+    });
+
     const teamSelect = document.getElementById('teamSelect');
     const createTeamButton = document.getElementById('createTeamButton');
     const playerList = document.getElementById('playerList');
@@ -13,34 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerJerseyNumber = document.getElementById('playerJerseyNumber');
     const playerRole = document.getElementById('playerRole');
     const addPlayerButton = document.getElementById('addPlayerButton');
+
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
     const saveShotButton = document.getElementById('saveShotButton');
+
     let currentTeam = null;
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
 
-    const githubUsername = 'omarabdiy';
-    const repoName = 'hockey';
-    const token = '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'; // Inserisci qui il tuo token
-
-    // Carica i dati dal file JSON
-    fetch(`https://raw.githubusercontent.com/${githubUsername}/${repoName}/main/data.json`)
-        .then(response => response.json())
-        .then(data => {
-            teams = data;
-            console.log('Teams loaded from JSON file:', teams);
-            initializeApp();
-        })
-        .catch(error => {
-            console.error('Error loading teams:', error);
-        });
-
     function initializeApp() {
-        if (teams.length > 0) {
-            currentTeam = teams[0];
-        }
+        currentTeam = teams[0];
         updateTeamSelectOptions();
         updatePlayerList();
         updatePlayerSelectOptions();
@@ -127,33 +128,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = team.name;
                 teamSelect.appendChild(option);
             });
-            if (currentTeam) {
-                teamSelect.value = currentTeam.name;
-            }
+            teamSelect.value = currentTeam.name;
         }
 
         function updatePlayerList() {
             playerList.innerHTML = '';
-            if (currentTeam) {
-                currentTeam.players.forEach(player => {
-                    const playerInfo = document.createElement('div');
-                    playerInfo.classList.add('player-info');
-                    playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
-                    playerList.appendChild(playerInfo);
-                });
-            }
+            currentTeam.players.forEach(player => {
+                const playerInfo = document.createElement('div');
+                playerInfo.classList.add('player-info');
+                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
+                playerList.appendChild(playerInfo);
+            });
         }
 
         function updatePlayerSelectOptions() {
             playerSelect.innerHTML = '';
-            if (currentTeam) {
-                currentTeam.players.forEach(player => {
-                    const option = document.createElement('option');
-                    option.value = player.name;
-                    option.textContent = `${player.name} (#${player.jerseyNumber})`;
-                    playerSelect.appendChild(option);
-                });
-            }
+            currentTeam.players.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player.name;
+                option.textContent = `${player.name} (#${player.jerseyNumber})`;
+                playerSelect.appendChild(option);
+            });
         }
 
         function updateStats(player, shotType) {
@@ -174,43 +169,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function saveTeams() {
             const filePath = 'data.json';
+            const content = btoa(JSON.stringify(teams, null, 2));
+            const token = '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';
 
-            // Prima, ottieni l'SHA del file corrente
-            fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`, {
+            fetch(`https://api.github.com/repos/omarabdiy/hockey/contents/${filePath}`, {
+                method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Update teams data',
+                    content: content,
+                    sha: 'SHA_OF_EXISTING_FILE'
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Teams saved to GitHub.');
+                    return response
+.json();
+                } else {
+                    throw new Error('Failed to save teams: ' + response.statusText);
                 }
             })
-                .then(response => response.json())
-                .then(data => {
-                    const sha = data.sha;
-                    const content = btoa(JSON.stringify(teams));
-                    const message = 'Update teams data';
-
-                    // Poi, salva il nuovo contenuto
-                    fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            content: content,
-                            sha: sha
-                        })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Teams saved to GitHub:', data);
-                        })
-                        .catch(error => {
-                            console.error('Error saving teams:', error);
-                        });
-                })
-                .catch(error => {
-                    console.error('Error retrieving file SHA:', error);
-                });
+            .then(data => {
+                console.log('Response:', data);
+            })
+            .catch(error => {
+                console.error('Error saving teams:', error);
+            });
         }
     }
 });
