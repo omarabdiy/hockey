@@ -1,5 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     let teams = [];
+
+    // Carica i dati dal file JSON
+    fetch('https://raw.githubusercontent.com/omarabdiy/hockey/main/data.json')
+        .then(response => response.json())
+        .then(data => {
+            teams = data;
+            console.log('Teams loaded from JSON file:', teams);
+            initializeApp();
+        })
+        .catch(error => {
+            console.error('Error loading teams:', error);
+        });
+
     const teamSelect = document.getElementById('teamSelect');
     const createTeamButton = document.getElementById('createTeamButton');
     const playerList = document.getElementById('playerList');
@@ -13,34 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerJerseyNumber = document.getElementById('playerJerseyNumber');
     const playerRole = document.getElementById('playerRole');
     const addPlayerButton = document.getElementById('addPlayerButton');
+
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
     const shotTypeSelect = document.getElementById('shotType');
     const saveShotButton = document.getElementById('saveShotButton');
+
     let currentTeam = null;
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
 
-    const githubUsername = 'omarabdiy';
-    const repoName = 'hockey';
-    const token = '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'; // Inserisci qui il tuo token
-
-    // Carica i dati dal file JSON
-    fetch(`https://raw.githubusercontent.com/${githubUsername}/${repoName}/main/data.json`)
-        .then(response => response.json())
-        .then(data => {
-            teams = data;
-            console.log('Teams loaded from JSON file:', teams);
-            initializeApp();
-        })
-        .catch(error => {
-            console.error('Error loading teams:', error);
-        });
-
     function initializeApp() {
-        if (teams.length > 0) {
-            currentTeam = teams[0];
-        }
+        currentTeam = teams[0];
         updateTeamSelectOptions();
         updatePlayerList();
         updatePlayerSelectOptions();
@@ -72,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 goals: 0,
                 misses: 0
             };
-            console.log('Adding new player:', newPlayer);
             currentTeam.players.push(newPlayer);
             saveTeams();
             updatePlayerList();
@@ -128,33 +124,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = team.name;
                 teamSelect.appendChild(option);
             });
-            if (currentTeam) {
-                teamSelect.value = currentTeam.name;
-            }
+            teamSelect.value = currentTeam.name;
         }
 
         function updatePlayerList() {
             playerList.innerHTML = '';
-            if (currentTeam) {
-                currentTeam.players.forEach(player => {
-                    const playerInfo = document.createElement('div');
-                    playerInfo.classList.add('player-info');
-                    playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
-                    playerList.appendChild(playerInfo);
-                });
-            }
+            currentTeam.players.forEach(player => {
+                const playerInfo = document.createElement('div');
+                playerInfo.classList.add('player-info');
+                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
+                playerList.appendChild(playerInfo);
+            });
         }
 
         function updatePlayerSelectOptions() {
             playerSelect.innerHTML = '';
-            if (currentTeam) {
-                currentTeam.players.forEach(player => {
-                    const option = document.createElement('option');
-                    option.value = player.name;
-                    option.textContent = `${player.name} (#${player.jerseyNumber})`;
-                    playerSelect.appendChild(option);
-                });
-            }
+            currentTeam.players.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player.name;
+                option.textContent = `${player.name} (#${player.jerseyNumber})`;
+                playerSelect.appendChild(option);
+            });
         }
 
         function updateStats(player, shotType) {
@@ -170,14 +160,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function clearField() {
             const markers = document.querySelectorAll('.marker');
-            markers.forEach(marker => marker.remove());
+            markers.forEach(marker => marker.remove();
         }
 
         function saveTeams() {
-            fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/main/data.json`, {
+            fetch('https://api.github.com/repos/omarabdiy/hockey/contents/data.json', {
                 method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': 'token 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',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -186,13 +176,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     sha: 'SHA_OF_EXISTING_FILE'
                 })
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Teams saved to GitHub:', data);
-                })
-                .catch(error => {
-                    console.error('Error saving teams:', error);
-                });
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to save teams: ' + response.statusText);
+                }
+            })
+            .then(data => {
+                console.log('Teams saved to GitHub:', data);
+            })
+            .catch(error => {
+                console.error('Error saving teams:', error);
+            });
         }
     }
 });
