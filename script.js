@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerJerseyNumber = document.getElementById('playerJerseyNumber');
     const playerRole = document.getElementById('playerRole');
     const addPlayerButton = document.getElementById('addPlayerButton');
-    const exportButton = document.createElement('button'); // Pulsante di esportazione
 
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
@@ -38,10 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickPosition = { x: 0, y: 0 };
 
     function initializeApp() {
-        currentTeam = teams[0];
-        updateTeamSelectOptions();
-        updatePlayerList();
-        updatePlayerSelectOptions();
+        if (teams.length > 0) {
+            currentTeam = teams[0];
+            updateTeamSelectOptions();
+            updatePlayerList();
+            updatePlayerSelectOptions();
+        }
 
         createTeamButton.addEventListener('click', () => {
             const teamName = prompt('Inserisci il nome della nuova squadra:');
@@ -122,7 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = team.name;
                 teamSelect.appendChild(option);
             });
-            teamSelect.value = currentTeam.name;
+            if (currentTeam) {
+                teamSelect.value = currentTeam.name;
+            }
         }
 
         function updatePlayerList() {
@@ -160,21 +163,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const markers = document.querySelectorAll('.marker');
             markers.forEach(marker => marker.remove());
         }
-
-        // Funzione di esportazione
-        exportButton.textContent = 'Esporta Dati';
-        document.getElementById('app').appendChild(exportButton);
-        exportButton.addEventListener('click', exportData);
-
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(teams));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "data.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
     }
+
+    // Funzione per esportare i dati
+    document.getElementById('exportDataButton').addEventListener('click', () => {
+        const dataStr = JSON.stringify(teams, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
 });
 
