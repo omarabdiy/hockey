@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerJerseyNumber = document.getElementById('playerJerseyNumber');
     const playerRole = document.getElementById('playerRole');
     const addPlayerButton = document.getElementById('addPlayerButton');
+    const exportButton = document.createElement('button'); // Pulsante di esportazione
 
     const shotPopup = document.getElementById('shotPopup');
     const playerSelect = document.getElementById('playerSelect');
@@ -159,5 +160,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const markers = document.querySelectorAll('.marker');
             markers.forEach(marker => marker.remove());
         }
+
+        // Funzione di esportazione
+        exportButton.textContent = 'Esporta Dati';
+        document.getElementById('app').appendChild(exportButton);
+        exportButton.addEventListener('click', exportData);
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(teams));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "data.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
     }
 });
+
