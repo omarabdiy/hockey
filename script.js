@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
-            teams = data.teams;
+            teams = data;
             console.log('Teams loaded from JSON file:', teams);
             initializeApp();
         })
@@ -37,15 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickPosition = { x: 0, y: 0 };
 
     function initializeApp() {
-        if (teams.length > 0) {
-            currentTeam = teams[0];
-            updateTeamSelectOptions();
-            updatePlayerList();
-            updatePlayerSelectOptions();
-        }
+        currentTeam = teams[0];
+        updateTeamSelectOptions();
+        updatePlayerList();
+        updatePlayerSelectOptions();
 
         createTeamButton.addEventListener('click', () => {
-            const teamName = prompt('Inserisci il nome della nuova squadra:');
+            const teamName = prompt('Enter the name of the new team:');
             if (teamName) {
                 teams.push({ name: teamName, players: [] });
                 updateTeamSelectOptions();
@@ -76,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         startMatchButton.addEventListener('click', () => {
-            alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
+            alert('Starting the match! Click on the hockey field to record shots.');
             clearField();
             hockeyField.addEventListener('click', onHockeyFieldClick);
         });
@@ -102,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.style.left = `${clickPosition.x}px`;
             marker.style.top = `${clickPosition.y}px`;
             hockeyField.appendChild(marker);
+
             updateStats(player, shotType);
             updatePlayerList();
             shotPopup.style.display = 'none';
@@ -122,43 +121,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = team.name;
                 teamSelect.appendChild(option);
             });
-            if (currentTeam) {
-                teamSelect.value = currentTeam.name;
-            }
+            teamSelect.value = currentTeam.name;
         }
 
         function updatePlayerList() {
             playerList.innerHTML = '';
-            if (currentTeam) {
-                currentTeam.players.forEach(player => {
-                    const playerInfo = document.createElement('div');
-                    playerInfo.classList.add('player-info');
-                    playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
-                    playerList.appendChild(playerInfo);
-                });
-            }
+            currentTeam.players.forEach(player => {
+                const playerInfo = document.createElement('div');
+                playerInfo.classList.add('player-info');
+                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Shots: ${player.shots}, Goals: ${player.goals}, Misses: ${player.misses}`;
+                playerList.appendChild(playerInfo);
+            });
         }
 
         function updatePlayerSelectOptions() {
             playerSelect.innerHTML = '';
-            if (currentTeam) {
-                currentTeam.players.forEach(player => {
-                    const option = document.createElement('option');
-                    option.value = player.name;
-                    option.textContent = `${player.name} (#${player.jerseyNumber})`;
-                    playerSelect.appendChild(option);
-                });
-            }
+            currentTeam.players.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player.name;
+                option.textContent = `${player.name} (#${player.jerseyNumber})`;
+                playerSelect.appendChild(option);
+            });
         }
 
         function updateStats(player, shotType) {
             stats.innerHTML = `
-                Giocatore: ${player.name}<br>
-                Tipo di tiro: ${shotType}<br><br>
-                Statistiche:<br>
-                Gol: ${shots.goals}<br>
-                Tiri fuori: ${shots.misses}<br>
-                Colpiti: ${shots.hits}
+                Player: ${player.name}<br>
+                Shot Type: ${shotType}<br><br>
+                Statistics:<br>
+                Goals: ${shots.goals}<br>
+                Misses: ${shots.misses}<br>
+                Hits: ${shots.hits}
             `;
         }
 
@@ -168,3 +161,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
