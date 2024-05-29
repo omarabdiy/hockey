@@ -3,55 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats App</title>
+    <title>Hockey Team Management</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app">
-        <h1>Stats App</h1>
-        <div id="team-selection">
-            <select id="teamSelect"></select>
-            <button id="createTeamButton">Crea Squadra</button>
-        </div>
+    <h1>Hockey Team Management</h1>
+    <div>
+        <label for="teamSelect">Select Team:</label>
+        <select id="teamSelect"></select>
+        <button id="createTeamButton">Create New Team</button>
+    </div>
+    <div id="playerForm">
+        <h2>Add Player</h2>
+        <label for="playerName">Name:</label>
+        <input type="text" id="playerName">
+        <label for="playerSurname">Surname:</label>
+        <input type="text" id="playerSurname">
+        <label for="playerBirthdate">Birthdate:</label>
+        <input type="date" id="playerBirthdate">
+        <label for="playerJerseyNumber">Jersey Number:</label>
+        <input type="number" id="playerJerseyNumber">
+        <label for="playerRole">Role:</label>
+        <input type="text" id="playerRole">
+        <button id="addPlayerButton">Add Player</button>
+    </div>
+    <div>
+        <h2>Player List</h2>
         <div id="playerList"></div>
-        <div id="playerForm">
-            <h3>Aggiungi Giocatore</h3>
-            <input type="text" id="playerName" placeholder="Nome">
-            <input type="text" id="playerSurname" placeholder="Cognome">
-            <input type="date" id="playerBirthdate" placeholder="Data di Nascita">
-            <input type="number" id="playerJerseyNumber" placeholder="Numero Maglia">
-            <input type="text" id="playerRole" placeholder="Ruolo">
-            <button id="addPlayerButton">Aggiungi Giocatore</button>
-        </div>
-        <button id="startMatchButton">Avvia Partita</button>
-        <div id="hockeyFieldContainer">
-            <div class="hockey-field">
-                <div class="line center-line"></div>
-                <div class="line goal-line left"></div>
-                <div class="line goal-line right"></div>
-                <div class="goal-crease left"></div>
-                <div class="goal-crease right"></div>
-                <div class="circle center"></div>
-                <div class="circle top-left"></div>
-                <div class="circle top-right"></div>
-                <div class="circle bottom-left"></div>
-                <div class="circle bottom-right"></div>
-            </div>
-        </div>
-        <div id="stats"></div>
     </div>
-    <div id="shotPopup" class="popup">
-        <label for="playerSelect">Seleziona Giocatore:</label>
+    <div>
+        <button id="startMatchButton">Start Match</button>
+    </div>
+    <div class="hockey-field"></div>
+    <div id="shotPopup">
+        <h3>Register Shot</h3>
+        <label for="playerSelect">Player:</label>
         <select id="playerSelect"></select>
-        <label for="shotType">Tipo di Tiro:</label>
+        <label for="shotType">Shot Type:</label>
         <select id="shotType">
-            <option value="G">Gol</option>
-            <option value="X">Tiro Fuori</option>
-            <option value="H">Colpito</option>
+            <option value="G">Goal</option>
+            <option value="X">Miss</option>
+            <option value="H">Hit</option>
         </select>
-        <button id="saveShotButton">Salva</button>
+        <button id="saveShotButton">Save Shot</button>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <div id="stats"></div>
     <script src="script.js"></script>
 </body>
 </html>
+
