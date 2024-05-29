@@ -44,7 +44,13 @@ body {
     width: 2px; 
     transform: translateX(-50%);
 }
-
+.goal-crease {
+    position: absolute;
+    width: 3.75%; 
+    height: 15%; 
+    background-color: rgba(255, 0, 0, 0.5);
+    border-radius: 50% / 25%;
+}
 .goal-line {
     width: 2px;
     height: 100%;
@@ -58,13 +64,7 @@ body {
     right: 5%;
 }
 
-.goal-crease {
-    position: absolute;
-    width: 3.75%; 
-    height: 15%; 
-    background-color: rgba(255, 0, 0, 0.5);
-    border-radius: 50% / 25%;
-}
+
 
 .goal-crease.left {
     left: 5%;
