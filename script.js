@@ -39,10 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeApp() {
         if (teams.length > 0) {
             currentTeam = teams[0];
+            updateTeamSelectOptions();
+            updatePlayerList();
+            updatePlayerSelectOptions();
         }
-        updateTeamSelectOptions();
-        updatePlayerList();
-        updatePlayerSelectOptions();
 
         createTeamButton.addEventListener('click', () => {
             const teamName = prompt('Inserisci il nome della nuova squadra:');
@@ -102,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.style.left = `${clickPosition.x}px`;
             marker.style.top = `${clickPosition.y}px`;
             hockeyField.appendChild(marker);
-
             updateStats(player, shotType);
             updatePlayerList();
             shotPopup.style.display = 'none';
