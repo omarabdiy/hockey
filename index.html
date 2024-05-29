@@ -3,52 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hockey Team Management</title>
+    <title>Hockey Field</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Hockey Team Management</h1>
-    <div>
-        <label for="teamSelect">Select Team:</label>
-        <select id="teamSelect"></select>
-        <button id="createTeamButton">Create New Team</button>
-    </div>
-    <div id="playerForm">
-        <h2>Add Player</h2>
-        <label for="playerName">Name:</label>
-        <input type="text" id="playerName">
-        <label for="playerSurname">Surname:</label>
-        <input type="text" id="playerSurname">
-        <label for="playerBirthdate">Birthdate:</label>
-        <input type="date" id="playerBirthdate">
-        <label for="playerJerseyNumber">Jersey Number:</label>
-        <input type="number" id="playerJerseyNumber">
-        <label for="playerRole">Role:</label>
-        <input type="text" id="playerRole">
-        <button id="addPlayerButton">Add Player</button>
-    </div>
-    <div>
-        <h2>Player List</h2>
+    <div id="app">
+        <div id="hockeyFieldContainer">
+            <div class="hockey-field">
+                <!-- Segni sul campo da hockey -->
+                <div class="line center-line"></div>
+                <div class="goal-line left"></div>
+                <div class="goal-line right"></div>
+                <div class="goal-crease left"></div>
+                <div class="goal-crease right"></div>
+                <div class="circle center"></div>
+                <div class="circle top-left"></div>
+                <div class="circle top-right"></div>
+                <div class="circle bottom-left"></div>
+                <div class="circle bottom-right"></div>
+            </div>
+        </div>
+
+        <!-- Modulo per aggiungere un nuovo giocatore -->
+        <form id="playerForm">
+            <input type="text" id="playerName" placeholder="Nome">
+            <input type="text" id="playerSurname" placeholder="Cognome">
+            <input type="text" id="playerBirthdate" placeholder="Data di nascita">
+            <input type="text" id="playerJerseyNumber" placeholder="Numero di maglia">
+            <input type="text" id="playerRole" placeholder="Ruolo">
+            <button id="addPlayerButton">Aggiungi giocatore</button>
+        </form>
+
+        <!-- Elenco giocatori -->
         <div id="playerList"></div>
     </div>
-    <div>
-        <button id="startMatchButton">Start Match</button>
-    </div>
-    <div class="hockey-field"></div>
-    <div id="shotPopup">
-        <h3>Register Shot</h3>
-        <label for="playerSelect">Player:</label>
-        <select id="playerSelect"></select>
-        <label for="shotType">Shot Type:</label>
-        <select id="shotType">
-            <option value="G">Goal</option>
-            <option value="X">Miss</option>
-            <option value="H">Hit</option>
-        </select>
-        <button id="saveShotButton">Save Shot</button>
-    </div>
-    <div id="stats"></div>
+
+    <!-- Script JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
-
