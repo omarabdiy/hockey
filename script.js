@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlayerSelectOptions();
 
         createTeamButton.addEventListener('click', () => {
-            const teamName = prompt('Enter the name of the new team:');
+            const teamName = prompt('Inserisci il nome della nuova squadra:');
             if (teamName) {
                 teams.push({ name: teamName, players: [] });
                 updateTeamSelectOptions();
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         startMatchButton.addEventListener('click', () => {
-            alert('Starting the match! Click on the hockey field to record shots.');
+            alert('Avvio della partita! Clicca sul campo da hockey per segnare i tiri.');
             clearField();
             hockeyField.addEventListener('click', onHockeyFieldClick);
         });
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTeam.players.forEach(player => {
                 const playerInfo = document.createElement('div');
                 playerInfo.classList.add('player-info');
-                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Shots: ${player.shots}, Goals: ${player.goals}, Misses: ${player.misses}`;
+                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
                 playerList.appendChild(playerInfo);
             });
         }
@@ -146,12 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updateStats(player, shotType) {
             stats.innerHTML = `
-                Player: ${player.name}<br>
-                Shot Type: ${shotType}<br><br>
-                Statistics:<br>
-                Goals: ${shots.goals}<br>
-                Misses: ${shots.misses}<br>
-                Hits: ${shots.hits}
+                Giocatore: ${player.name}<br>
+                Tipo di tiro: ${shotType}<br><br>
+                Statistiche:<br>
+                Gol: ${shots.goals}<br>
+                Tiri fuori: ${shots.misses}<br>
+                Colpiti: ${shots.hits}
             `;
         }
 
@@ -161,4 +161,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-
