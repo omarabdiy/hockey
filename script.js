@@ -3,7 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Carica i dati dal file JSON
     fetch('data.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             teams = data;
             console.log('Teams loaded from JSON file:', teams);
@@ -39,15 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeApp() {
         if (teams.length > 0) {
             currentTeam = teams[0];
-            updateTeamSelectOptions();
-            updatePlayerList();
-            updatePlayerSelectOptions();
         }
+        updateTeamSelectOptions();
+        updatePlayerList();
+        updatePlayerSelectOptions();
 
         createTeamButton.addEventListener('click', () => {
             const teamName = prompt('Inserisci il nome della nuova squadra:');
             if (teamName) {
                 teams.push({ name: teamName, players: [] });
+                saveTeams();
                 updateTeamSelectOptions();
             }
         });
@@ -71,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 misses: 0
             };
             currentTeam.players.push(newPlayer);
+            saveTeams();
             updatePlayerList();
             updatePlayerSelectOptions();
         });
@@ -104,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             hockeyField.appendChild(marker);
 
             updateStats(player, shotType);
+            saveTeams();
             updatePlayerList();
             shotPopup.style.display = 'none';
         });
@@ -130,22 +138,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function updatePlayerList() {
             playerList.innerHTML = '';
-            currentTeam.players.forEach(player => {
-                const playerInfo = document.createElement('div');
-                playerInfo.classList.add('player-info');
-                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
-                playerList.appendChild(playerInfo);
-            });
+            if (currentTeam) {
+                currentTeam.players.forEach(player => {
+                    const playerInfo = document.createElement('div');
+                    playerInfo.classList.add('player-info');
+                    playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
+                    playerList.appendChild(playerInfo);
+                });
+            }
         }
 
         function updatePlayerSelectOptions() {
             playerSelect.innerHTML = '';
-            currentTeam.players.forEach(player => {
-                const option = document.createElement('option');
-                option.value = player.name;
-                option.textContent = `${player.name} (#${player.jerseyNumber})`;
-                playerSelect.appendChild(option);
-            });
+            if (currentTeam) {
+                currentTeam.players.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.name;
+                    option.textContent = `${player.name} (#${player.jerseyNumber})`;
+                    playerSelect.appendChild(option);
+                });
+            }
         }
 
         function updateStats(player, shotType) {
@@ -163,19 +175,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const markers = document.querySelectorAll('.marker');
             markers.forEach(marker => marker.remove());
         }
-    }
 
-    // Funzione per esportare i dati
-    document.getElementById('exportDataButton').addEventListener('click', () => {
-        const dataStr = JSON.stringify(teams, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'data.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    });
+        function saveTeams() {
+            const blob = new Blob([JSON.stringify(teams, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    }
 });
+
 
