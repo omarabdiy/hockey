@@ -1,81 +1,81 @@
 [
     {
-        "name": "Scomed",
+        "name": "Squadra di Prova",
         "players": [
             {
-                "name": "Omar",
-                "surname": "Abdelmotti",
-                "birthdate": "2005-09-28",
-                "jerseyNumber": 10,
-                "role": "Difensore",
-                "shots": 0,
-                "goals": 0,
-                "misses": 0
-            },
-            {
-                "name": "Ale",
-                "surname": "Bergamini",
-                "birthdate": "1999-02-02",
-                "jerseyNumber": 43,
+                "name": "Giocatore 1",
+                "surname": "Cognome 1",
+                "birthdate": "1990-01-01",
+                "jerseyNumber": 1,
                 "role": "Attaccante",
                 "shots": 0,
                 "goals": 0,
                 "misses": 0
             },
             {
-                "name": "Gabbo",
-                "surname": "Verdi",
-                "birthdate": "1998-03-03",
-                "jerseyNumber": 14,
+                "name": "Giocatore 2",
+                "surname": "Cognome 2",
+                "birthdate": "1991-02-02",
+                "jerseyNumber": 2,
                 "role": "Difensore",
                 "shots": 0,
                 "goals": 0,
                 "misses": 0
             },
             {
-                "name": "Gabba",
-                "surname": "Neri",
-                "birthdate": "1997-04-04",
-                "jerseyNumber": 47,
-                "role": "Attaccante"
-                "shots": 0,
-                "goals": 0,
-                "misses": 0
-            },
-            {
-                "name": "Tommaso",
-                "surname": "Blu",
-                "birthdate": "1996-05-05",
-                "jerseyNumber": 74,
-                "role": "Attaccante",
-                "shots": 0,
-                "goals": 0,
-                "misses": 0
-            },
-            {
-                "name": "Giulia",
-                "surname": "Gialli",
-                "birthdate": "1995-06-06",
-                "jerseyNumber": 6,
-                "role": "Difensore",
-                "shots": 0,
-                "goals": 0,
-                "misses": 0
-            },
-            {
-                "name": "Jack",
-                "surname": "Azzurri",
-                "birthdate": "1994-07-07",
-                "jerseyNumber": 7,
+                "name": "Giocatore 3",
+                "surname": "Cognome 3",
+                "birthdate": "1992-03-03",
+                "jerseyNumber": 3,
                 "role": "Portiere",
                 "shots": 0,
                 "goals": 0,
                 "misses": 0
             },
             {
-                "name": "Amza",
-                "surname": "Viola",
-                "birthdate": "1993-08-08",
+                "name": "Giocatore 4",
+                "surname": "Cognome 4",
+                "birthdate": "1993-04-04",
+                "jerseyNumber": 4,
+                "role": "Attaccante",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore 5",
+                "surname": "Cognome 5",
+                "birthdate": "1994-05-05",
+                "jerseyNumber": 5,
+                "role": "Difensore",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore 6",
+                "surname": "Cognome 6",
+                "birthdate": "1995-06-06",
+                "jerseyNumber": 6,
+                "role": "Portiere",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore 7",
+                "surname": "Cognome 7",
+                "birthdate": "1996-07-07",
+                "jerseyNumber": 7,
+                "role": "Attaccante",
+                "shots": 0,
+                "goals": 0,
+                "misses": 0
+            },
+            {
+                "name": "Giocatore 8",
+                "surname": "Cognome 8",
+                "birthdate": "1997-08-08",
                 "jerseyNumber": 8,
                 "role": "Difensore",
                 "shots": 0,
@@ -83,11 +83,11 @@
                 "misses": 0
             },
             {
-                "name": "Riky",
-                "surname": "Marrone",
-                "birthdate": "1992-09-09",
+                "name": "Giocatore 9",
+                "surname": "Cognome 9",
+                "birthdate": "1998-09-09",
                 "jerseyNumber": 9,
-                "role": "Attaccante",
+                "role": "Portiere",
                 "shots": 0,
                 "goals": 0,
                 "misses": 0
