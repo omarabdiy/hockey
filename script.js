@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
-            teams = data;
+            teams = data.teams;
             console.log('Teams loaded from JSON file:', teams);
             initializeApp();
         })
@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickPosition = { x: 0, y: 0 };
 
     function initializeApp() {
-        currentTeam = teams[0];
+        if (teams.length > 0) {
+            currentTeam = teams[0];
+        }
         updateTeamSelectOptions();
         updatePlayerList();
         updatePlayerSelectOptions();
@@ -46,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const teamName = prompt('Inserisci il nome della nuova squadra:');
             if (teamName) {
                 teams.push({ name: teamName, players: [] });
-                saveTeams();
                 updateTeamSelectOptions();
             }
         });
@@ -70,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 misses: 0
             };
             currentTeam.players.push(newPlayer);
-            saveTeams();
             updatePlayerList();
             updatePlayerSelectOptions();
         });
@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             hockeyField.appendChild(marker);
 
             updateStats(player, shotType);
-            saveTeams();
             updatePlayerList();
             shotPopup.style.display = 'none';
         });
@@ -124,27 +123,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = team.name;
                 teamSelect.appendChild(option);
             });
-            teamSelect.value = currentTeam.name;
+            if (currentTeam) {
+                teamSelect.value = currentTeam.name;
+            }
         }
 
         function updatePlayerList() {
             playerList.innerHTML = '';
-            currentTeam.players.forEach(player => {
-                const playerInfo = document.createElement('div');
-                playerInfo.classList.add('player-info');
-                playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
-                playerList.appendChild(playerInfo);
-            });
+            if (currentTeam) {
+                currentTeam.players.forEach(player => {
+                    const playerInfo = document.createElement('div');
+                    playerInfo.classList.add('player-info');
+                    playerInfo.textContent = `${player.name} (#${player.jerseyNumber}, ${player.role}) - Tiri: ${player.shots}, Gol: ${player.goals}, Fuori: ${player.misses}`;
+                    playerList.appendChild(playerInfo);
+                });
+            }
         }
 
         function updatePlayerSelectOptions() {
             playerSelect.innerHTML = '';
-            currentTeam.players.forEach(player => {
-                const option = document.createElement('option');
-                option.value = player.name;
-                option.textContent = `${player.name} (#${player.jerseyNumber})`;
-                playerSelect.appendChild(option);
-            });
+            if (currentTeam) {
+                currentTeam.players.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.name;
+                    option.textContent = `${player.name} (#${player.jerseyNumber})`;
+                    playerSelect.appendChild(option);
+                });
+            }
         }
 
         function updateStats(player, shotType) {
@@ -161,33 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
         function clearField() {
             const markers = document.querySelectorAll('.marker');
             markers.forEach(marker => marker.remove());
-        }
-
-        function saveTeams() {
-            const filePath = 'data.json';
-            const content = btoa(JSON.stringify(teams, null, 2));
-            const token = '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';
-
-            fetch(`https://api.github.com/repos/omarabdiy/hockey/contents/${filePath}`, {
-                method:
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Update teams data',
-                    content: content,
-                    sha: 'd13626261947b71e02b645640150f5d2a7ccbb0c'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Teams saved to GitHub:', data);
-            })
-            .catch(error => {
-                console.error('Error saving teams:', error);
-            });
         }
     }
 });
