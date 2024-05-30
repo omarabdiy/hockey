@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const shotTypeSelect = document.getElementById('shotType');
     const saveShotButton = document.getElementById('saveShotButton');
 
+    const downloadDataButton = document.getElementById('downloadDataButton');
+    const uploadDataInput = document.getElementById('uploadDataInput');
+    const uploadDataButton = document.getElementById('uploadDataButton');
+
     let currentTeam = null;
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
@@ -53,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const teamName = prompt('Inserisci il nome della nuova squadra:');
             if (teamName) {
                 teams.push({ name: teamName, players: [] });
-                saveTeams();
                 updateTeamSelectOptions();
             }
         });
@@ -77,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 misses: 0
             };
             currentTeam.players.push(newPlayer);
-            saveTeams();
             updatePlayerList();
             updatePlayerSelectOptions();
         });
@@ -111,9 +113,37 @@ document.addEventListener('DOMContentLoaded', () => {
             hockeyField.appendChild(marker);
 
             updateStats(player, shotType);
-            saveTeams();
             updatePlayerList();
             shotPopup.style.display = 'none';
+        });
+
+        downloadDataButton.addEventListener('click', saveTeams);
+
+        uploadDataButton.addEventListener('click', () => {
+            uploadDataInput.click();
+        });
+
+        uploadDataInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const uploadedData = JSON.parse(e.target.result);
+                        teams = uploadedData;
+                        if (teams.length > 0) {
+                            currentTeam = teams[0];
+                        }
+                        updateTeamSelectOptions();
+                        updatePlayerList();
+                        updatePlayerSelectOptions();
+                    } catch (error) {
+                        console.error('Error parsing uploaded file:', error);
+                        alert('Errore nel caricamento del file. Assicurati che il file sia in formato JSON corretto.');
+                    }
+                };
+                reader.readAsText(file);
+            }
         });
 
         function onHockeyFieldClick(event) {
@@ -187,5 +217,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-
 
