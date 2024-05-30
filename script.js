@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     let teams = [];
-    let matches = [];
 
     // Carica i dati dal file JSON
     fetch('data.json')
@@ -11,19 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            teams = data.teams;
-            matches = data.matches;
-            console.log('Data loaded from JSON file:', { teams, matches });
+            teams = data;
+            console.log('Teams loaded from JSON file:', teams);
             initializeApp();
         })
         .catch(error => {
-            console.error('Error loading data:', error);
+            console.error('Error loading teams:', error);
         });
 
     const teamSelect = document.getElementById('teamSelect');
     const createTeamButton = document.getElementById('createTeamButton');
-    const matchSelect = document.getElementById('matchSelect');
-    const createMatchButton = document.getElementById('createMatchButton');
     const playerList = document.getElementById('playerList');
     const startMatchButton = document.getElementById('startMatchButton');
     const hockeyField = document.querySelector('.hockey-field');
@@ -46,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadDataButton = document.getElementById('uploadDataButton');
 
     let currentTeam = null;
-    let currentMatch = null;
     let shots = { goals: 0, misses: 0, hits: 0 };
     let clickPosition = { x: 0, y: 0 };
 
@@ -57,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTeamSelectOptions();
         updatePlayerList();
         updatePlayerSelectOptions();
-        updateMatchSelectOptions();
 
         createTeamButton.addEventListener('click', () => {
             const teamName = prompt('Inserisci il nome della nuova squadra:');
@@ -72,22 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTeam = teams.find(team => team.name === selectedTeamName);
             updatePlayerList();
             updatePlayerSelectOptions();
-        });
-
-        createMatchButton.addEventListener('click', () => {
-            const matchName = prompt('Inserisci il nome della nuova partita:');
-            if (matchName) {
-                matches.push({ name: matchName, team: currentTeam.name, shots: [] });
-                updateMatchSelectOptions();
-            }
-        });
-
-        matchSelect.addEventListener('change', () => {
-            const selectedMatchName = matchSelect.value;
-            currentMatch = matches.find(match => match.name === selectedMatchName);
-            clearField();
-            currentMatch.shots.forEach(shot => addShotMarker(shot.x, shot.y, shot.type));
-            updateStats();
         });
 
         addPlayerButton.addEventListener('click', () => {
@@ -127,15 +105,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 shots.hits++;
             }
 
-            currentMatch.shots.push({ player: playerName, type: shotType, x: clickPosition.x, y: clickPosition.y });
+            const marker = document.createElement('div');
+            marker.classList.add('marker');
+            marker.classList.add(shotType === 'G' ? 'green' : shotType === 'X' ? 'red' : 'blue');
+            marker.style.left = `${clickPosition.x}px`;
+            marker.style.top = `${clickPosition.y}px`;
+            hockeyField.appendChild(marker);
 
-            addShotMarker(clickPosition.x, clickPosition.y, shotType);
             updateStats(player, shotType);
             updatePlayerList();
             shotPopup.style.display = 'none';
         });
 
-        downloadDataButton.addEventListener('click', saveData);
+        downloadDataButton.addEventListener('click', saveTeams);
 
         uploadDataButton.addEventListener('click', () => {
             uploadDataInput.click();
@@ -148,18 +130,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 reader.onload = (e) => {
                     try {
                         const uploadedData = JSON.parse(e.target.result);
-                        teams = uploadedData.teams;
-                        matches = uploadedData.matches;
+                        teams = uploadedData;
                         if (teams.length > 0) {
                             currentTeam = teams[0];
-                        }
-                        if (matches.length > 0) {
-                            currentMatch = matches[0];
                         }
                         updateTeamSelectOptions();
                         updatePlayerList();
                         updatePlayerSelectOptions();
-                        updateMatchSelectOptions();
                     } catch (error) {
                         console.error('Error parsing uploaded file:', error);
                         alert('Errore nel caricamento del file. Assicurati che il file sia in formato JSON corretto.');
@@ -189,19 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        function updateMatchSelectOptions() {
-            matchSelect.innerHTML = '';
-            matches.forEach(match => {
-                const option = document.createElement('option');
-                option.value = match.name;
-                option.textContent = match.name;
-                matchSelect.appendChild(option);
-            });
-            if (currentMatch) {
-                matchSelect.value = currentMatch.name;
-            }
-        }
-
         function updatePlayerList() {
             playerList.innerHTML = '';
             if (currentTeam) {
@@ -226,9 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        function updateStats() {
+        function updateStats(player, shotType) {
             stats.innerHTML = `
-                Partita: ${currentMatch.name}<br><br>
+                Giocatore: ${player.name}<br>
+                Tipo di tiro: ${shotType}<br><br>
                 Statistiche:<br>
                 Gol: ${shots.goals}<br>
                 Tiri fuori: ${shots.misses}<br>
@@ -241,21 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
             markers.forEach(marker => marker.remove());
         }
 
-        function addShotMarker(x, y, type) {
-            const marker = document.createElement('div');
-            marker.classList.add('marker');
-            marker.classList.add(type === 'G' ? 'green' : type === 'X' ? 'red' : 'blue');
-            marker.style.left = `${x}px`;
-            marker.style.top = `${y}px`;
-            hockeyField.appendChild(marker);
-        }
-
-        function saveData() {
-            const data = {
-                teams: teams,
-                matches: matches
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        function saveTeams() {
+            const blob = new Blob([JSON.stringify(teams, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
