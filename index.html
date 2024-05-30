@@ -13,10 +13,6 @@
             <select id="teamSelect"></select>
             <button id="createTeamButton">Crea Squadra</button>
         </div>
-        <div id="match-selection">
-            <select id="matchSelect"></select>
-            <button id="createMatchButton">Crea Partita</button>
-        </div>
         <div id="playerList"></div>
         <div id="playerForm">
             <h3>Aggiungi Giocatore</h3>
@@ -43,6 +39,9 @@
             </div>
         </div>
         <div id="stats"></div>
+        <button id="downloadDataButton">Scarica Dati</button>
+        <input type="file" id="uploadDataInput" style="display: none;">
+        <button id="uploadDataButton">Carica Dati</button>
     </div>
     <div id="shotPopup" class="popup">
         <label for="playerSelect">Seleziona Giocatore:</label>
@@ -55,11 +54,7 @@
         </select>
         <button id="saveShotButton">Salva</button>
     </div>
-    <div>
-        <button id="downloadDataButton">Scarica Dati</button>
-        <input type="file" id="uploadDataInput" style="display:none;">
-        <button id="uploadDataButton">Carica Dati</button>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
