@@ -81,9 +81,9 @@ body {
 
 .circle {
     position: absolute;
-    width: 12.5%;
-    height: 25%;
-    border: 2px solid #fff;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
     border-radius: 50%;
 }
 
@@ -144,17 +144,10 @@ body {
     margin-bottom: 10px;
     width: calc(100% - 22px);
     padding: 10px;
-    border-radius: 5px;
-    border: 2px solid #00aaff;
+    border-radius: 10px;
+    border: 1px solid #ccc;
     background-color: #f0f0f0;
     box-sizing: border-box;
-    transition: border-color 0.3s;
-}
-
-#playerForm input:focus,
-#playerForm button:focus {
-    outline: none;
-    border-color: #ffd700;
 }
 
 #playerForm button {
@@ -162,7 +155,6 @@ body {
     border: none;
     color: #000;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 #playerForm button:hover {
@@ -183,7 +175,6 @@ body {
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    border-radius: 20px;
 }
 
 .popup label,
@@ -192,9 +183,9 @@ body {
     display: block;
     margin-bottom: 10px;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
-    border: 2px solid #00aaff;
+    border: 1px solid #ccc;
     background-color: #f0f0f0;
 }
 
@@ -202,19 +193,10 @@ body {
     background-color: #ffd700;
     color: #000;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .popup select {
     height: 40px;
-}
-
-.popup button:hover {
-    background-color: #ffc107;
-}
-
-.popup button:active {
-    background-color: #ff9800;
 }
 
 #downloadDataButton,
@@ -227,7 +209,6 @@ body {
     border: none;
     color: #000;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 #downloadDataButton {
@@ -249,4 +230,3 @@ body {
 .popup button:active {
     background-color: #ff9800;
 }
-
